@@ -22,12 +22,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.example.myapplication.ui.theme.MyApplicationTheme
+
+enum class CatstagramScreens(){
+    Base,
+    Story,
+}
+
+//data class TextModifiers(
+//    val modifiers: Modifier =
+//        Modifier
+//            .fillMaxWidth()
+//            .padding(12.dp),
+//    val text: String = "",
+//    val textFontSize: TextUnit = 20.sp,
+//    val textFontStyle: FontStyle = FontStyle.Normal,
+//    val color: Color = Color.Black,
+//)
+//
+//private val text: TextModifiers = TextModifiers()
 
 @Composable
 internal fun BaseScreen() {
@@ -42,17 +62,41 @@ internal fun BaseScreen() {
 
         NewsFeed()
     }
-
 }
 
 @Composable
-fun NewsFeed() {
+fun HeaderBlock() {
+
     Row(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
+            .background(
+                brush = Brush.verticalGradient(
+                    0f to Color.hsv(206f, 0.00f, 0.9f),
+                    0.5f to Color.hsv(206f, 0.07f, 0.8f),
+                    1f to Color.hsv(206f, 0.00f, 0.9f)
+                )
+            )
+            .fillMaxWidth()
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
+        Box {
+            Icon(
+                modifier = Modifier.size(40.dp),
+                painter = painterResource(R.drawable.photo_icon),
+                contentDescription = "",
+            )
+        }
+        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            Text(text = "Catstagram", fontSize = 25.sp, color = Color.Black)
+        }
+        Box {
+            Icon(
+                modifier = Modifier.size(40.dp),
+                painter = painterResource(R.drawable.photo_icon),
+                contentDescription = "",
+            )
+        }
     }
 }
 
@@ -80,7 +124,7 @@ fun StoriesBlock() {
 
         Button(
             modifier = Modifier,
-            onClick = {},
+            onClick = { },
             shape = CutCornerShape(0.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -89,19 +133,16 @@ fun StoriesBlock() {
                 disabledContainerColor = Color.White
             )
         ) {
-            Row() {
-                Icon(
-                    painter = painterResource(R.drawable.play_icon),
-                    contentDescription = "",
-                )
-                Text(
-                    text = "Watch All",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Black
-                )
-            }
-
+            Icon(
+                painter = painterResource(R.drawable.play_icon),
+                contentDescription = "",
+            )
+            Text(
+                text = "Watch All",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.Black
+            )
         }
     }
 
@@ -116,7 +157,10 @@ fun StoriesBlock() {
                 painter = painterResource(R.drawable.photo_icon),
                 contentDescription = "",
             )
-            TODO("Text()")
+            Text(
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                text = "You"
+            )
         }
 
     }
@@ -131,38 +175,13 @@ fun StoriesBlock() {
 }
 
 @Composable
-fun HeaderBlock() {
-
+fun NewsFeed() {
     Row(
         modifier = Modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    0f to Color.hsv(206f, 0.00f, 0.9f),
-                    0.5f to Color.hsv(206f, 0.07f, 0.8f),
-                    1f to Color.hsv(206f, 0.00f, 0.9f)
-                )
-            )
-            .fillMaxWidth()
-            .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .fillMaxSize()
+            .background(color = Color.White)
     ) {
-        Box() {
-            Icon(
-                modifier = Modifier.size(40.dp),
-                painter = painterResource(R.drawable.photo_icon),
-                contentDescription = "",
-            )
-        }
-        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-            Text(text = "Catstagram", fontSize = 25.sp, color = Color.Black)
-        }
-        Box() {
-            Icon(
-                modifier = Modifier.size(40.dp),
-                painter = painterResource(R.drawable.photo_icon),
-                contentDescription = "",
-            )
-        }
+
     }
 }
 
