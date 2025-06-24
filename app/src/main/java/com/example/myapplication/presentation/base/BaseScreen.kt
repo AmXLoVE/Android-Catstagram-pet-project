@@ -2,6 +2,7 @@ package com.example.myapplication.presentation.base
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -127,7 +128,7 @@ fun StoriesBlock(stories: StoryList) {
         Button(
             modifier = Modifier,
             onClick = { },
-            shape = CutCornerShape(0.dp),
+            shape = RoundedCornerShape(30.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
                 containerColor = Color.White,
@@ -171,6 +172,7 @@ fun StoriesBlock(stories: StoryList) {
                 modifier = Modifier
                     .size(75.dp, 110.dp)
                     .align(alignment = Alignment.CenterVertically)
+                    .clickable { }
             ) {
                 Icon(
                     modifier = Modifier.size(75.dp),
