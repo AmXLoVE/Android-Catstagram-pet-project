@@ -4,16 +4,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.base.BaseScreen
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
+import com.example.myapplication.presentation.base.model.AnyInfo
+import com.example.myapplication.presentation.story.StoryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyApplicationTheme {
-                BaseScreen()
+            val navController = rememberNavController()
+
+            NavHost(
+                navController = navController,
+                startDestination = "BaseScreen"
+            ){
+                composable("BaseScreen"){
+                    BaseScreen(onNavigate = {navController.navigate("StoryScreen")})
+                }
+
+                composable("StoryScreen"){
+                    StoryScreen(onNavigate = {navController.navigate("BaseScreen")}, AnyInfo("", 0))
+                }
             }
         }
     }

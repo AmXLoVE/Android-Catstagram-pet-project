@@ -3,13 +3,11 @@ package com.example.myapplication.presentation.base
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -61,7 +59,7 @@ enum class CatstagramScreens() {
 //private val text: TextModifiers = TextModifiers()
 
 @Composable
-internal fun BaseScreen() {
+internal fun BaseScreen(onNavigate: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +68,7 @@ internal fun BaseScreen() {
     ) {
         HeaderBlock()
 
-        StoriesBlock(storyList)
+        StoriesBlock(storyList, onNavigate)
 
         NewsFeed(postList)
     }
@@ -123,7 +121,7 @@ fun HeaderBlock() {
 }
 
 @Composable
-fun StoriesBlock(stories: StoryList) {
+fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,7 +134,7 @@ fun StoriesBlock(stories: StoryList) {
 
         Button(
             modifier = Modifier,
-            onClick = { },
+            onClick = onNavigate,
             shape = RoundedCornerShape(30.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -181,7 +179,6 @@ fun StoriesBlock(stories: StoryList) {
                 modifier = Modifier
                     .size(75.dp, 110.dp)
                     .align(alignment = Alignment.CenterVertically)
-                    .clickable { }
             ) {
                 Icon(
                     modifier = Modifier.size(75.dp),
@@ -246,7 +243,7 @@ fun NewsFeed(posts: PostList) {
                     Image(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.play_icon),
+                        bitmap = ImageBitmap.imageResource(id = post.image),
                         contentDescription = "...",
                     )
                 }
@@ -310,6 +307,6 @@ fun NewsFeed(posts: PostList) {
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
     BaseScreen(
-
+        onNavigate = { }
     )
 }

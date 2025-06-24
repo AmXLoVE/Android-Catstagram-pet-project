@@ -3,12 +3,13 @@ package com.example.myapplication.presentation.base.model
 import com.example.myapplication.R
 
 
-data class StoryList(val storyList: List<Story>)
+class StoryList(val storyList: List<Story>)
 
-data class Story(
-    val name: String = "Undefined",
-    val icon: Int = R.drawable.photo_icon,
-)
+class Story(
+    name: String = "Undefined",
+    icon: Int = R.drawable.photo_icon,
+    val image: Int = R.drawable.play_icon,
+): AnyInfo(name, icon)
 
 val storyList = StoryList(
     listOf(
