@@ -13,9 +13,10 @@ data class Story(
 val storyList = StoryList(
     listOf(
         Story("Marat_WarTHUNDER", R.drawable.photo_icon),
+        Story("Leha", R.drawable.photo_icon),
         Story("Albertina_Iglesias", R.drawable.photo_icon),
         Story("Masha228", R.drawable.photo_icon),
         Story("Pasha007", R.drawable.photo_icon),
-        Story("Leha", R.drawable.photo_icon)
+        Story("ABCDEFGJKKK", R.drawable.photo_icon)
     )
 )

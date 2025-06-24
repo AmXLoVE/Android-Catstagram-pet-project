@@ -1,6 +1,8 @@
 package com.example.myapplication.presentation.base
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
+import com.example.myapplication.presentation.base.model.StoryList
+import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-enum class CatstagramScreens(){
+enum class CatstagramScreens() {
     Base,
     Story,
 }
@@ -58,7 +60,7 @@ internal fun BaseScreen() {
     ) {
         HeaderBlock()
 
-        StoriesBlock()
+        StoriesBlock(storyList)
 
         NewsFeed()
     }
@@ -98,10 +100,7 @@ fun HeaderBlock() {
             )
         }
     }
-}
 
-@Composable
-fun StoriesBlock() {
     Spacer(
         modifier = Modifier
             .height(4.dp)
@@ -111,7 +110,10 @@ fun StoriesBlock() {
             )
             .fillMaxWidth()
     )
+}
 
+@Composable
+fun StoriesBlock(stories: StoryList) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -150,6 +152,7 @@ fun StoriesBlock() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
+            .horizontalScroll(ScrollState(0))
     ) {
         Column {
             Icon(
@@ -163,6 +166,30 @@ fun StoriesBlock() {
             )
         }
 
+        for (story in stories.storyList) {
+            Column(
+                modifier = Modifier
+                    .size(75.dp, 110.dp)
+                    .align(alignment = Alignment.CenterVertically)
+            ) {
+                Icon(
+                    modifier = Modifier.size(75.dp),
+                    painter = painterResource(R.drawable.photo_icon),
+                    contentDescription = "",
+                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier
+                            .padding(6.dp, 0.dp)
+                            .horizontalScroll(ScrollState(0))
+                            .align(alignment = Alignment.TopCenter),
+                        text = story.name,
+
+                        )
+                }
+
+            }
+        }
     }
 
     Spacer(
