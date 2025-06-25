@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,32 +35,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
+import com.example.myapplication.presentation.base.model.AnyInfo
 import com.example.myapplication.presentation.base.model.PostList
+import com.example.myapplication.presentation.base.model.Story
 import com.example.myapplication.presentation.base.model.StoryList
 import com.example.myapplication.presentation.base.model.postList
 import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-enum class CatstagramScreens() {
-    Base,
-    Story,
-}
-
-//data class TextModifiers(
-//    val modifiers: Modifier =
-//        Modifier
-//            .fillMaxWidth()
-//            .padding(12.dp),
-//    val text: String = "",
-//    val textFontSize: TextUnit = 20.sp,
-//    val textFontStyle: FontStyle = FontStyle.Normal,
-//    val color: Color = Color.Black,
-//)
-//
-//private val text: TextModifiers = TextModifiers()
+var currentInfo: AnyInfo = AnyInfo("", 0)
 
 @Composable
-internal fun BaseScreen(onNavigate: () -> Unit) {
+internal fun BaseScreen(onNavigate: () -> Story) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,7 +108,7 @@ fun HeaderBlock() {
 }
 
 @Composable
-fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
+fun StoriesBlock(stories: StoryList, onNavigate: () -> Story) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,14 +121,14 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
 
         Button(
             modifier = Modifier,
-            onClick = onNavigate,
+            onClick = { onNavigate() },
             shape = RoundedCornerShape(30.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
                 containerColor = Color.White,
                 disabledContentColor = Color.White,
                 disabledContainerColor = Color.White
-            )
+            ),
         ) {
             Icon(
                 painter = painterResource(R.drawable.play_icon),
@@ -162,23 +149,23 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
             .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
             .horizontalScroll(ScrollState(0))
     ) {
-        Column {
-            Icon(
-                modifier = Modifier.size(75.dp),
-                painter = painterResource(R.drawable.photo_icon),
-                contentDescription = "",
-            )
-            Text(
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                text = "You"
-            )
-        }
-
-        for (story in stories.storyList) {
+        Button(
+            modifier = Modifier
+                .size(75.dp, 110.dp)
+                .padding(4.dp),
+            onClick = { onNavigate(Story("You")) },
+            shape = RoundedCornerShape(15.dp),
+            colors = ButtonColors(
+                contentColor = Color.Black,
+                containerColor = Color.White,
+                disabledContentColor = Color.White,
+                disabledContainerColor = Color.White
+            ),
+            contentPadding = PaddingValues(0.dp),
+        ) {
             Column(
                 modifier = Modifier
-                    .size(75.dp, 110.dp)
-                    .align(alignment = Alignment.CenterVertically)
+                    .fillMaxSize()
             ) {
                 Icon(
                     modifier = Modifier.size(75.dp),
@@ -191,11 +178,48 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
                             .padding(6.dp, 0.dp)
                             .horizontalScroll(ScrollState(0))
                             .align(alignment = Alignment.TopCenter),
-                        text = story.name,
+                        text = "You",
 
                         )
                 }
+            }
+        }
 
+        for (story in stories.storyList) {
+            Button(
+                modifier = Modifier
+                    .size(75.dp, 110.dp)
+                    .padding(4.dp),
+                onClick = { onNavigate(story) },
+                shape = RoundedCornerShape(15.dp),
+                colors = ButtonColors(
+                    contentColor = Color.Black,
+                    containerColor = Color.White,
+                    disabledContentColor = Color.White,
+                    disabledContainerColor = Color.White
+                ),
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Icon(
+                        modifier = Modifier.size(75.dp),
+                        painter = painterResource(R.drawable.photo_icon),
+                        contentDescription = "",
+                    )
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            modifier = Modifier
+                                .padding(6.dp, 0.dp)
+                                .horizontalScroll(ScrollState(0))
+                                .align(alignment = Alignment.TopCenter),
+                            text = story.name,
+
+                            )
+                    }
+                }
             }
         }
     }
@@ -243,7 +267,7 @@ fun NewsFeed(posts: PostList) {
                     Image(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
-                        bitmap = ImageBitmap.imageResource(id = post.image),
+                        bitmap = ImageBitmap.imageResource(id = R.drawable.play_icon),
                         contentDescription = "...",
                     )
                 }
@@ -303,10 +327,12 @@ fun NewsFeed(posts: PostList) {
     }
 }
 
+private fun openStory(story: Story): () -> Unit {
+    currentInfo = AnyInfo(story.name, story.icon)
+}
+
 @Preview(heightDp = 800)
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
-    BaseScreen(
-        onNavigate = { }
-    )
+    BaseScreen(onNavigate = {})
 }

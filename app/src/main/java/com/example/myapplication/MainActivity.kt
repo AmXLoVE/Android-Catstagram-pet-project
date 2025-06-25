@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.base.BaseScreen
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
+import com.example.myapplication.presentation.base.currentInfo
 import com.example.myapplication.presentation.base.model.AnyInfo
 import com.example.myapplication.presentation.story.StoryScreen
 
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable("StoryScreen"){
-                    StoryScreen(onNavigate = {navController.navigate("BaseScreen")}, AnyInfo("", 0))
+                    StoryScreen(onNavigate = {navController.navigate("BaseScreen")})
                 }
             }
         }
