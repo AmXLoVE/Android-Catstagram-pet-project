@@ -19,33 +19,32 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.presentation.base.model.AnyInfo
 import com.example.myapplication.presentation.base.model.Story
 
 @Composable
-internal fun StoryScreen(onNavigate: () -> Story) {
+internal fun StoryScreen(onNavigate: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.hsv(0f, 0f, 0.12f))
     ) {
-        HeaderBlock(onNavigate())
+        HeaderBlock()
 
-        ImageBlock(onNavigate())
+        ImageBlock()
 
-        ReactionBlock(onNavigate())
+        ReactionBlock()
     }
 }
 
 @Composable
-fun HeaderBlock(story: AnyInfo) {
+fun HeaderBlock() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
     ) {
         Image(
-            painter = painterResource(story.icon),
+            painter = painterResource(R.drawable.photo_icon),
             contentDescription = "",
             modifier = Modifier
                 .size(60.dp)
@@ -55,18 +54,18 @@ fun HeaderBlock(story: AnyInfo) {
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically),
-            text = story.name,
+            text = "Albertina_0_o",
         )
     }
 }
 
 @Composable
-fun ImageBlock(story: AnyInfo) {
+fun ImageBlock() {
 
 }
 
 @Composable
-fun ReactionBlock(story: AnyInfo) {
+fun ReactionBlock() {
 
 }
 
@@ -74,6 +73,6 @@ fun ReactionBlock(story: AnyInfo) {
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
     StoryScreen(
-        onNavigate(AnyInfo("ALBERTINA", R.drawable.photo_icon))
+        onNavigate = {}
     )
 }

@@ -7,14 +7,14 @@ import java.util.Date
 class PostList(val postList: List<Post>)
 
 class Post(
-    name: String,
-    icon: Int = R.drawable.photo_icon,
+    val name: String,
+    val icon: Int = R.drawable.photo_icon,
     val image: Int = R.drawable.play_icon,
     val likeCount: Int = 9,
     val commCount: Int = 13,
     val repCount: Int = 2,
     val time: Date = Calendar.getInstance().time
-): AnyInfo(name, icon)
+)
 
 val postList: PostList = PostList(
     listOf(

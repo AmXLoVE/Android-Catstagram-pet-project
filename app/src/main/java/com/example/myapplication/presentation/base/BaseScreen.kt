@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
-import com.example.myapplication.presentation.base.model.AnyInfo
 import com.example.myapplication.presentation.base.model.PostList
 import com.example.myapplication.presentation.base.model.Story
 import com.example.myapplication.presentation.base.model.StoryList
@@ -43,10 +42,8 @@ import com.example.myapplication.presentation.base.model.postList
 import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-var currentInfo: AnyInfo = AnyInfo("", 0)
-
 @Composable
-internal fun BaseScreen(onNavigate: () -> Story) {
+internal fun BaseScreen(onNavigate: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +105,7 @@ fun HeaderBlock() {
 }
 
 @Composable
-fun StoriesBlock(stories: StoryList, onNavigate: () -> Story) {
+fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -153,7 +150,7 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Story) {
             modifier = Modifier
                 .size(75.dp, 110.dp)
                 .padding(4.dp),
-            onClick = { onNavigate(Story("You")) },
+            onClick = onNavigate,
             shape = RoundedCornerShape(15.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -190,7 +187,7 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Story) {
                 modifier = Modifier
                     .size(75.dp, 110.dp)
                     .padding(4.dp),
-                onClick = { onNavigate(story) },
+                onClick = onNavigate,
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonColors(
                     contentColor = Color.Black,
@@ -325,10 +322,6 @@ fun NewsFeed(posts: PostList) {
             )
         }
     }
-}
-
-private fun openStory(story: Story): () -> Unit {
-    currentInfo = AnyInfo(story.name, story.icon)
 }
 
 @Preview(heightDp = 800)
