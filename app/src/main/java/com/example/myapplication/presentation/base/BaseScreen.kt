@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -46,11 +47,13 @@ internal fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (Story) -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .verticalScroll(state = ScrollState(0))
+            .verticalScroll(scrollState)
     ) {
         HeaderBlock()
 
@@ -154,7 +157,7 @@ fun StoriesBlock(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
-            .horizontalScroll(ScrollState(0))
+            .horizontalScroll(rememberScrollState())
     ) {
         Button(
             modifier = Modifier
