@@ -37,13 +37,15 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.example.myapplication.presentation.base.model.PostList
 import com.example.myapplication.presentation.base.model.Story
-import com.example.myapplication.presentation.base.model.StoryList
 import com.example.myapplication.presentation.base.model.postList
 import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-internal fun BaseScreen(onNavigate: () -> Unit) {
+internal fun BaseScreen(
+    onWatchAll: () -> Unit,
+    onShowCurrentStory: (Story) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,7 +54,11 @@ internal fun BaseScreen(onNavigate: () -> Unit) {
     ) {
         HeaderBlock()
 
-        StoriesBlock(storyList, onNavigate)
+        StoriesBlock(
+            stories = storyList,
+            onWatchAll = onWatchAll,
+            onShowCurrentStory = onShowCurrentStory
+        )
 
         NewsFeed(postList)
     }
@@ -105,7 +111,11 @@ fun HeaderBlock() {
 }
 
 @Composable
-fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
+fun StoriesBlock(
+    stories: List<Story>,
+    onWatchAll: () -> Unit,
+    onShowCurrentStory: (Story) -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,7 +128,7 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
 
         Button(
             modifier = Modifier,
-            onClick = { onNavigate() },
+            onClick = onWatchAll,
             shape = RoundedCornerShape(30.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -150,7 +160,7 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
             modifier = Modifier
                 .size(75.dp, 110.dp)
                 .padding(4.dp),
-            onClick = onNavigate,
+            onClick = onWatchAll,
             shape = RoundedCornerShape(15.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -176,18 +186,17 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
                             .horizontalScroll(ScrollState(0))
                             .align(alignment = Alignment.TopCenter),
                         text = "You",
-
-                        )
+                    )
                 }
             }
         }
 
-        for (story in stories.storyList) {
+        stories.forEach { story: Story ->
             Button(
                 modifier = Modifier
                     .size(75.dp, 110.dp)
                     .padding(4.dp),
-                onClick = onNavigate,
+                onClick = { onShowCurrentStory(story) },
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonColors(
                     contentColor = Color.Black,
@@ -213,8 +222,7 @@ fun StoriesBlock(stories: StoryList, onNavigate: () -> Unit) {
                                 .horizontalScroll(ScrollState(0))
                                 .align(alignment = Alignment.TopCenter),
                             text = story.name,
-
-                            )
+                        )
                     }
                 }
             }
@@ -327,5 +335,8 @@ fun NewsFeed(posts: PostList) {
 @Preview(heightDp = 800)
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
-    BaseScreen(onNavigate = {})
+    BaseScreen(
+        onWatchAll = {},
+        onShowCurrentStory = {},
+    )
 }

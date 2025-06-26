@@ -1,7 +1,5 @@
 package com.example.myapplication.presentation.story
 
-import android.graphics.Paint.Align
-import com.example.myapplication.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,23 +10,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myapplication.ui.theme.MyApplicationTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 import com.example.myapplication.presentation.base.model.Story
+import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-internal fun StoryScreen(onNavigate: () -> Unit) {
+internal fun StoryScreen(
+    onNavigate: () -> Unit,
+    story: Story?
+) {
+    story ?: return
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.hsv(0f, 0f, 0.12f))
     ) {
-        HeaderBlock()
+        HeaderBlock(story = story)
 
         ImageBlock()
 
@@ -37,14 +42,16 @@ internal fun StoryScreen(onNavigate: () -> Unit) {
 }
 
 @Composable
-fun HeaderBlock() {
+fun HeaderBlock(
+    story: Story
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
     ) {
         Image(
-            painter = painterResource(R.drawable.photo_icon),
+            painter = painterResource(story.icon),
             contentDescription = "",
             modifier = Modifier
                 .size(60.dp)
@@ -54,7 +61,8 @@ fun HeaderBlock() {
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically),
-            text = "Albertina_0_o",
+            text = story.name,
+            color = Color.White,
         )
     }
 }
@@ -73,6 +81,9 @@ fun ReactionBlock() {
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
     StoryScreen(
-        onNavigate = {}
+        onNavigate = {},
+        story = Story(
+            name = "Alan",
+        ),
     )
 }

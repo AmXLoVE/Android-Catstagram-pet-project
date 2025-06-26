@@ -1,34 +1,57 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.ComponentActivity
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.base.BaseScreen
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.NavHost
+import com.example.myapplication.presentation.base.model.Story
+import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.presentation.story.StoryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             val navController = rememberNavController()
+            val currentStory = remember { mutableStateOf<Story?>(null) }
 
             NavHost(
                 navController = navController,
-                startDestination = "BaseScreen"
-            ){
-                composable("BaseScreen"){
-                    BaseScreen(onNavigate = {navController.navigate("StoryScreen")})
+                startDestination = BASE_SCREEN,
+            ) {
+                composable(BASE_SCREEN) {
+                    BaseScreen(
+                        onWatchAll = {
+                            currentStory.value = storyList.firstOrNull()
+                            navController.navigate(STORY_SCREEN)
+                        },
+                        onShowCurrentStory = { story ->
+                            currentStory.value = story
+                            navController.navigate(STORY_SCREEN)
+                        },
+                    )
                 }
 
-                composable("StoryScreen"){
-                    StoryScreen(onNavigate = {navController.navigate("BaseScreen")})
+                composable(STORY_SCREEN) {
+                    StoryScreen(
+                        onNavigate = { navController.navigate(BASE_SCREEN) },
+                        story = currentStory.value,
+                    )
                 }
             }
         }
     }
 }
+
+const val STORY_SCREEN = "StoryScreen"
+const val BASE_SCREEN = "BaseScreen"
