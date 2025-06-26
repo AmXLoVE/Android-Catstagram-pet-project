@@ -1,7 +1,6 @@
 package com.example.myapplication.presentation.base
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -32,13 +31,14 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
+import com.example.myapplication.presentation.base.model.Post
 import com.example.myapplication.presentation.base.model.PostList
 import com.example.myapplication.presentation.base.model.Story
-import com.example.myapplication.presentation.base.model.postList
 import com.example.myapplication.presentation.base.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -46,6 +46,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 internal fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (Story) -> Unit,
+    onWatchYou: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -60,10 +61,11 @@ internal fun BaseScreen(
         StoriesBlock(
             stories = storyList,
             onWatchAll = onWatchAll,
-            onShowCurrentStory = onShowCurrentStory
+            onShowCurrentStory = onShowCurrentStory,
+            onWatchYou = onWatchYou,
         )
 
-        NewsFeed(postList)
+        NewsFeed(PostList)
     }
 }
 
@@ -118,6 +120,7 @@ fun StoriesBlock(
     stories: List<Story>,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (Story) -> Unit,
+    onWatchYou: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -163,7 +166,7 @@ fun StoriesBlock(
             modifier = Modifier
                 .size(75.dp, 110.dp)
                 .padding(4.dp),
-            onClick = onWatchAll,
+            onClick = onWatchYou,
             shape = RoundedCornerShape(15.dp),
             colors = ButtonColors(
                 contentColor = Color.Black,
@@ -186,7 +189,6 @@ fun StoriesBlock(
                     Text(
                         modifier = Modifier
                             .padding(6.dp, 0.dp)
-                            .horizontalScroll(ScrollState(0))
                             .align(alignment = Alignment.TopCenter),
                         text = "You",
                     )
@@ -220,9 +222,10 @@ fun StoriesBlock(
                     )
                     Box(modifier = Modifier.fillMaxSize()) {
                         Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .padding(6.dp, 0.dp)
-                                .horizontalScroll(ScrollState(0))
                                 .align(alignment = Alignment.TopCenter),
                             text = story.name,
                         )
@@ -242,9 +245,9 @@ fun StoriesBlock(
 }
 
 @Composable
-fun NewsFeed(posts: PostList) {
+fun NewsFeed(posts: List<Post>) {
     Column {
-        for (post in posts.postList) {
+        posts.forEach { post ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -261,7 +264,7 @@ fun NewsFeed(posts: PostList) {
                         contentDescription = ""
                     )
 
-                    Column() {
+                    Column {
                         Row {
                             Text(text = post.name)
                         }
@@ -271,7 +274,7 @@ fun NewsFeed(posts: PostList) {
                     }
                 }
 
-                Box() {
+                Box {
                     Image(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
@@ -341,5 +344,6 @@ private fun BaseScreenPreview() = MyApplicationTheme {
     BaseScreen(
         onWatchAll = {},
         onShowCurrentStory = {},
+        onWatchYou = {},
     )
 }

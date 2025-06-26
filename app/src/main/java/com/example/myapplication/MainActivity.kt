@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -21,13 +23,15 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val currentStory = remember { mutableStateOf<Story?>(null) }
+            val currentStory = remember { mutableStateOf<Story?>(null) } //TODO ViewModel
 
             NavHost(
                 navController = navController,
                 startDestination = BASE_SCREEN,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None },
             ) {
-                composable(BASE_SCREEN) {
+                composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
                             currentStory.value = storyList.firstOrNull()
@@ -35,6 +39,10 @@ class MainActivity : ComponentActivity() {
                         },
                         onShowCurrentStory = { story ->
                             currentStory.value = story
+                            navController.navigate(STORY_SCREEN)
+                        },
+                        onWatchYou = {
+                            currentStory.value = Story("You")
                             navController.navigate(STORY_SCREEN)
                         },
                     )

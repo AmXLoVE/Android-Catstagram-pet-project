@@ -4,8 +4,6 @@ import com.example.myapplication.R
 import java.util.Calendar
 import java.util.Date
 
-class PostList(val postList: List<Post>)
-
 class Post(
     val name: String,
     val icon: Int = R.drawable.photo_icon,
@@ -16,11 +14,9 @@ class Post(
     val time: Date = Calendar.getInstance().time
 )
 
-val postList: PostList = PostList(
-    listOf(
-        Post(name = "ALBERTINA_0_o"),
-        Post(name = "xXx_puli_ot_babuli_xXx"),
-        Post(name = "Masha_Kulakova_7"),
-        Post(name = "FoxVapeShop")
-    )
+val PostList = listOf(
+    Post(name = "ALBERTINA_0_o"),
+    Post(name = "xXx_puli_ot_babuli_xXx"),
+    Post(name = "Masha_Kulakova_7"),
+    Post(name = "FoxVapeShop")
 )
