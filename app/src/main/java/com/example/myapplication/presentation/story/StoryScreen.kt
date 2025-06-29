@@ -30,7 +30,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myapplication.R
-import com.example.myapplication.presentation.story.model.Story
+import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable

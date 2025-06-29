@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.base.model
+package com.example.myapplication.domain.base.model
 
 import com.example.myapplication.R
 import java.util.Calendar

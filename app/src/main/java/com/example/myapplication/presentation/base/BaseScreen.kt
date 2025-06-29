@@ -36,10 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
-import com.example.myapplication.presentation.base.model.Post
-import com.example.myapplication.presentation.base.model.PostList
-import com.example.myapplication.presentation.story.model.Story
-import com.example.myapplication.presentation.story.model.storyList
+import com.example.myapplication.domain.base.model.Post
+import com.example.myapplication.domain.base.model.PostList
+import com.example.myapplication.domain.story.model.Story
+import com.example.myapplication.domain.story.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable

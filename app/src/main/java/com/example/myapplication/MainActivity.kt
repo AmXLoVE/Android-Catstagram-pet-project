@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.base.BaseScreen
-import com.example.myapplication.presentation.story.model.Story
-import com.example.myapplication.presentation.story.model.storyList
+import com.example.myapplication.domain.story.model.Story
+import com.example.myapplication.domain.story.model.storyList
 import com.example.myapplication.presentation.story.StoryScreen
 
 class MainActivity : ComponentActivity() {
