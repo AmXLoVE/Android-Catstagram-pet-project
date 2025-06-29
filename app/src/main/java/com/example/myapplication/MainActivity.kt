@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.base.BaseScreen
-import com.example.myapplication.presentation.base.model.Story
-import com.example.myapplication.presentation.base.model.storyList
+import com.example.myapplication.presentation.story.model.Story
+import com.example.myapplication.presentation.story.model.storyList
 import com.example.myapplication.presentation.story.StoryScreen
 
 class MainActivity : ComponentActivity() {
@@ -34,15 +34,11 @@ class MainActivity : ComponentActivity() {
                 composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
-                            currentStory.value = storyList.firstOrNull()
+                            currentStory.value = if (storyList.size > 1) storyList[1] else null
                             navController.navigate(STORY_SCREEN)
                         },
                         onShowCurrentStory = { story ->
                             currentStory.value = story
-                            navController.navigate(STORY_SCREEN)
-                        },
-                        onWatchYou = {
-                            currentStory.value = Story("You")
                             navController.navigate(STORY_SCREEN)
                         },
                     )

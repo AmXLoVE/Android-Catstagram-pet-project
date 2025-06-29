@@ -38,15 +38,14 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.example.myapplication.presentation.base.model.Post
 import com.example.myapplication.presentation.base.model.PostList
-import com.example.myapplication.presentation.base.model.Story
-import com.example.myapplication.presentation.base.model.storyList
+import com.example.myapplication.presentation.story.model.Story
+import com.example.myapplication.presentation.story.model.storyList
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
 internal fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (Story) -> Unit,
-    onWatchYou: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -62,7 +61,6 @@ internal fun BaseScreen(
             stories = storyList,
             onWatchAll = onWatchAll,
             onShowCurrentStory = onShowCurrentStory,
-            onWatchYou = onWatchYou,
         )
 
         NewsFeed(PostList)
@@ -119,8 +117,7 @@ fun HeaderBlock() {
 fun StoriesBlock(
     stories: List<Story>,
     onWatchAll: () -> Unit,
-    onShowCurrentStory: (Story) -> Unit,
-    onWatchYou: () -> Unit
+    onShowCurrentStory: (Story) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -162,40 +159,6 @@ fun StoriesBlock(
             .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
             .horizontalScroll(rememberScrollState())
     ) {
-        Button(
-            modifier = Modifier
-                .size(75.dp, 110.dp)
-                .padding(4.dp),
-            onClick = onWatchYou,
-            shape = RoundedCornerShape(15.dp),
-            colors = ButtonColors(
-                contentColor = Color.Black,
-                containerColor = Color.White,
-                disabledContentColor = Color.White,
-                disabledContainerColor = Color.White
-            ),
-            contentPadding = PaddingValues(0.dp),
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Icon(
-                    modifier = Modifier.size(75.dp),
-                    painter = painterResource(R.drawable.photo_icon),
-                    contentDescription = "",
-                )
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        modifier = Modifier
-                            .padding(6.dp, 0.dp)
-                            .align(alignment = Alignment.TopCenter),
-                        text = "You",
-                    )
-                }
-            }
-        }
-
         stories.forEach { story: Story ->
             Button(
                 modifier = Modifier
@@ -344,6 +307,5 @@ private fun BaseScreenPreview() = MyApplicationTheme {
     BaseScreen(
         onWatchAll = {},
         onShowCurrentStory = {},
-        onWatchYou = {},
     )
 }
