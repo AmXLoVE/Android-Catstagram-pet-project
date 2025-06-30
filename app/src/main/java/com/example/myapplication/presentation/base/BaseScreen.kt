@@ -1,52 +1,29 @@
 package com.example.myapplication.presentation.base
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.myapplication.R
-import com.example.myapplication.domain.base.model.Post
-import com.example.myapplication.domain.base.model.PostList
-import com.example.myapplication.domain.story.model.Story
-import com.example.myapplication.domain.story.model.storyList
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.domain.base.model.*
+import com.example.myapplication.domain.story.model.*
+import com.example.myapplication.presentation.base.Ui.*
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
 internal fun BaseScreen(
     onWatchAll: () -> Unit,
-    onShowCurrentStory: (Story) -> Unit,
+    onShowCurrentStory: (StoryPreview) -> Unit,
+    viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
+    val state by remember {viewModel.uiState}.collectAsState()
     val scrollState = rememberScrollState()
 
     Column(
@@ -58,246 +35,12 @@ internal fun BaseScreen(
         HeaderBlock()
 
         StoriesBlock(
-            stories = storyList,
+            stories = state.stories,
             onWatchAll = onWatchAll,
             onShowCurrentStory = onShowCurrentStory,
         )
 
-        NewsFeed(PostList)
-    }
-}
-
-@Composable
-fun HeaderBlock() {
-
-    Row(
-        modifier = Modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    0f to Color.hsv(206f, 0.00f, 0.9f),
-                    0.5f to Color.hsv(206f, 0.07f, 0.8f),
-                    1f to Color.hsv(206f, 0.00f, 0.9f)
-                )
-            )
-            .fillMaxWidth()
-            .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box {
-            Icon(
-                modifier = Modifier.size(40.dp),
-                painter = painterResource(R.drawable.photo_icon),
-                contentDescription = "",
-            )
-        }
-        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-            Text(text = "Catstagram", fontSize = 25.sp, color = Color.Black)
-        }
-        Box {
-            Icon(
-                modifier = Modifier.size(40.dp),
-                painter = painterResource(R.drawable.photo_icon),
-                contentDescription = "",
-            )
-        }
-    }
-
-    Spacer(
-        modifier = Modifier
-            .height(4.dp)
-            .background(
-                color = Color.hsv(206f, 0.1f, 0.9f),
-                shape = RoundedCornerShape(percent = 100)
-            )
-            .fillMaxWidth()
-    )
-}
-
-@Composable
-fun StoriesBlock(
-    stories: List<Story>,
-    onWatchAll: () -> Unit,
-    onShowCurrentStory: (Story) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "Stories", fontSize = 20.sp)
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            modifier = Modifier,
-            onClick = onWatchAll,
-            shape = RoundedCornerShape(30.dp),
-            colors = ButtonColors(
-                contentColor = Color.Black,
-                containerColor = Color.White,
-                disabledContentColor = Color.White,
-                disabledContainerColor = Color.White
-            ),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.play_icon),
-                contentDescription = "",
-            )
-            Text(
-                text = "Watch All",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black
-            )
-        }
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
-            .horizontalScroll(rememberScrollState())
-    ) {
-        stories.forEach { story: Story ->
-            Button(
-                modifier = Modifier
-                    .size(75.dp, 110.dp)
-                    .padding(4.dp),
-                onClick = { onShowCurrentStory(story) },
-                shape = RoundedCornerShape(15.dp),
-                colors = ButtonColors(
-                    contentColor = Color.Black,
-                    containerColor = Color.White,
-                    disabledContentColor = Color.White,
-                    disabledContainerColor = Color.White
-                ),
-                contentPadding = PaddingValues(0.dp),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Icon(
-                        modifier = Modifier.size(75.dp),
-                        painter = painterResource(R.drawable.photo_icon),
-                        contentDescription = "",
-                    )
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .padding(6.dp, 0.dp)
-                                .align(alignment = Alignment.TopCenter),
-                            text = story.name,
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    Spacer(
-        modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .height(3.dp)
-            .background(color = Color.hsv(206f, 0.03f, 0.9f))
-            .fillMaxWidth()
-    )
-}
-
-@Composable
-fun NewsFeed(posts: List<Post>) {
-    Column {
-        posts.forEach { post ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(45.dp)
-                            .padding(4.dp),
-                        painter = painterResource(post.image),
-                        contentDescription = ""
-                    )
-
-                    Column {
-                        Row {
-                            Text(text = post.name)
-                        }
-                        Row {
-                            Text(text = "Posted in ${post.time}", fontSize = 12.sp)
-                        }
-                    }
-                }
-
-                Box {
-                    Image(
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize(),
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.play_icon),
-                        contentDescription = "...",
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .padding(6.dp, 12.dp)
-                ) {
-                    Icon(
-                        modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = post.likeCount.toString(),
-                        fontSize = 22.sp,
-                        fontStyle = FontStyle.Normal,
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                    )
-
-                    Icon(
-                        modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = post.commCount.toString(),
-                        fontSize = 22.sp,
-                        fontStyle = FontStyle.Normal,
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                    )
-
-                    Icon(
-                        modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = post.repCount.toString(),
-                        fontSize = 22.sp,
-                        fontStyle = FontStyle.Normal,
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                    )
-                }
-            }
-
-            Spacer(
-                modifier = Modifier
-                    .height(2.dp)
-                    .background(
-                        color = Color.hsv(206f, 0.1f, 0.9f),
-                        shape = RoundedCornerShape(percent = 100)
-                    )
-                    .fillMaxWidth()
-            )
-        }
+        PostsBlock(postList)
     }
 }
 
@@ -307,5 +50,6 @@ private fun BaseScreenPreview() = MyApplicationTheme {
     BaseScreen(
         onWatchAll = {},
         onShowCurrentStory = {},
+        hiltViewModel<BaseScreenViewModel>()
     )
 }

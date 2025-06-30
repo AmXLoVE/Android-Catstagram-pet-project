@@ -1,26 +1,33 @@
 package com.example.myapplication.data.base
 
-class PostRepository{
-    companion object{
-        /**
-         * Вызывается для ленты новостей для N последних постов
-         */
-        fun getLastNPost(){
+import com.example.myapplication.domain.base.model.Post
+import com.example.myapplication.domain.base.model.postList
+import com.example.myapplication.domain.story.model.Story
+import com.example.myapplication.domain.story.model.storyList
 
-        }
+class PostRepository {
+    /**
+     * Вызывается для ленты новостей для N последних постов
+     */
+    fun getLastNPost(n: Int): List<Post> {
+        if (n >= postList.size)
+            return postList
+        return postList.subList(0, n)
+    }
 
-        /**
-         * Вызывается в профиле пользователя, отдает все его посты
-         */
-        fun getAllUserPosts(){
+    /**
+     * Вызывается в профиле пользователя, отдает все его посты
+     */
+    fun getAllUserPosts(name: String): List<Post> {
+        return postList
+            .filter { it.name == name }
+    }
 
-        }
-
-        /**
-         * Вызывается для открытия поста ([com.example.myapplication.domain.base.model.Post]) (пока хз зачем надо)
-         */
-        fun getCurrentPost(){
-
-        }
+    /**
+     * Вызывается для открытия поста ([com.example.myapplication.domain.base.model.Post]) (пока хз зачем надо)
+     */
+    fun getCurrentPost(name: String): Post {
+        return postList
+            .filter { it.name == name }[0]
     }
 }

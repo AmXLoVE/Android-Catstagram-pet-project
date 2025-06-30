@@ -2,7 +2,9 @@ package com.example.myapplication.domain.story.model
 
 import com.example.myapplication.R
 
-
+/**
+ * Мокап данных из БД
+ */
 data class Story(
     val name: String = "Undefined",
     val image: Int,
