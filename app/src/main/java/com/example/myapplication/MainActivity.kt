@@ -6,17 +6,25 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.data.story.StoryRepository
 import com.example.myapplication.presentation.base.BaseScreen
-import com.example.myapplication.domain.story.model.Story
-import com.example.myapplication.domain.story.model.storyList
+import com.example.myapplication.presentation.base.BaseScreenViewModel
+import com.example.myapplication.presentation.base.BaseScreenViewModel_HiltModules
 import com.example.myapplication.presentation.story.StoryScreen
+import com.example.myapplication.presentation.story.StoryScreenViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +32,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val currentStory = remember { mutableStateOf<Story?>(null) } //TODO ViewModel
+            val viewModel = hiltViewModel<BaseScreenViewModel>()
+            val baseState by remember { viewModel.uiBaseState }.collectAsState()
 
             NavHost(
                 navController = navController,
@@ -35,15 +44,12 @@ class MainActivity : ComponentActivity() {
                 composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
-                                val stories = StoryRepository.getAllAvailableStories()
-                                if (stories.isNotEmpty())
-                                    currentStory.value = StoryRepository.getCurrentStory(name = stories[1].name)
-                                else
-                                    currentStory.value = null
+                            baseState.stories[1] // TODO передать в StoryScreen Story
                             navController.navigate(STORY_SCREEN)
                         },
                         onShowCurrentStory = { story ->
-                            currentStory.value = StoryRepository.getCurrentStory(story.name)
+//                            currentStory.value = storyRepository.getCurrentStory(story.name)
+                            baseState.stories.find { (name, icon, hasStory) -> name == story.name }
                             navController.navigate(STORY_SCREEN)
                         },
                     )
@@ -52,13 +58,13 @@ class MainActivity : ComponentActivity() {
                 composable(STORY_SCREEN) {
                     StoryScreen(
                         onNavigate = { navController.navigate(BASE_SCREEN) },
-                        story = currentStory.value,
                     )
                 }
             }
         }
     }
-}
 
-const val STORY_SCREEN = "StoryScreen"
-const val BASE_SCREEN = "BaseScreen"
+    @Inject
+    lateinit var storyRepository: StoryRepository
+
+}

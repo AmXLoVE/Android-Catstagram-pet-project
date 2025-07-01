@@ -2,10 +2,8 @@ package com.example.myapplication.data.base
 
 import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.domain.base.model.postList
-import com.example.myapplication.domain.story.model.Story
-import com.example.myapplication.domain.story.model.storyList
 
-class PostRepository {
+class PostRepository{
     /**
      * Вызывается для ленты новостей для N последних постов
      */

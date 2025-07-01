@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.base.Ui
+package com.example.myapplication.presentation.base.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

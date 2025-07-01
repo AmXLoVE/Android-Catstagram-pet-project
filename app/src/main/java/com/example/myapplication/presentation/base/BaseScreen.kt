@@ -12,9 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myapplication.domain.base.model.*
 import com.example.myapplication.domain.story.model.*
-import com.example.myapplication.presentation.base.Ui.*
+import com.example.myapplication.presentation.base.ui.*
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
@@ -23,7 +22,7 @@ internal fun BaseScreen(
     onShowCurrentStory: (StoryPreview) -> Unit,
     viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
-    val state by remember {viewModel.uiState}.collectAsState()
+    val state by remember {viewModel.uiBaseState}.collectAsState()
     val scrollState = rememberScrollState()
 
     Column(
@@ -40,7 +39,7 @@ internal fun BaseScreen(
             onShowCurrentStory = onShowCurrentStory,
         )
 
-        PostsBlock(postList)
+        PostsBlock(state.posts)
     }
 }
 

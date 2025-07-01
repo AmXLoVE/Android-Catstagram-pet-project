@@ -10,10 +10,10 @@ import coil.request.ImageRequest
 import com.example.myapplication.domain.story.model.Story
 
 @Composable
-fun GetStoryImage(story: Story){
+fun GetStoryImage(imageRes: Int){
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(story.image)
+            .data(imageRes)
             .crossfade(true)
             .build(),
         contentDescription = "",

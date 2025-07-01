@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.base.Ui
+package com.example.myapplication.presentation.base.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
-import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import kotlin.collections.forEach
 

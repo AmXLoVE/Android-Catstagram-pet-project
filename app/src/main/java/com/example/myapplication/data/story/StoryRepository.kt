@@ -4,7 +4,7 @@ import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.domain.story.model.storyList
 
-class StoryRepository {
+class StoryRepository{
     /**
      * Вызывается для ленты новостей - отображает доступные Story
      * посредством StoryPreview
