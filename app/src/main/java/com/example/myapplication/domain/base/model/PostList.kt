@@ -11,9 +11,9 @@ class Post(
     val name: String,
     val icon: Int = R.drawable.photo_icon,
     val image: Int = R.drawable.play_icon,
-    val likeCount: Int = 9,
-    val commCount: Int = 13,
-    val repCount: Int = 2,
+    val likeCount: Int = 0,
+    val commCount: Int = 0,
+    val repCount: Int = 0,
     val time: Date = Calendar.getInstance().time
 )
 
