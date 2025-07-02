@@ -44,11 +44,14 @@ internal fun StoryScreen(
     val state by remember { viewModel.uiStoryState }.collectAsState()
 
     LaunchedEffect(Unit) {
-        Log.i("asdfasdf", "$name")
-        viewModel.findByName(name)
+        if(name != "0")
+            viewModel.findByName(name)
+        else
+            viewModel.getFirstStory()
     }
 
-    if (state.icon == 0) return
+    if (state.name == "" || state.image == 0 || state.icon == 0)
+        return
 
     Box(
         modifier = Modifier

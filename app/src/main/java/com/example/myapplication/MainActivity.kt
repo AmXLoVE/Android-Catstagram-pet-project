@@ -35,8 +35,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val viewModel = hiltViewModel<BaseScreenViewModel>()
-            val baseState by remember { viewModel.uiBaseState }.collectAsState()
 
             NavHost(
                 navController = navController,
@@ -47,11 +45,9 @@ class MainActivity : ComponentActivity() {
                 composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
-                            baseState.stories[1] // TODO передать в StoryScreen Story
-                            navController.navigate(STORY_SCREEN)
+                            navController.navigate("$STORY_SCREEN?0")
                         },
                         onShowCurrentStory = { story ->
-                            baseState.stories.find { (name, icon, hasStory) -> name == story.name }
                             navController.navigate("$STORY_SCREEN?${story.name}")
                         },
                     )
@@ -72,8 +68,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    @Inject
-    lateinit var storyRepository: StoryRepository
-
 }

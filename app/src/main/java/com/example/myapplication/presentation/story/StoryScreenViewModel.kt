@@ -2,7 +2,6 @@ package com.example.myapplication.presentation.story
 
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.story.StoryRepository
-import com.example.myapplication.data.story.StoryRepository2
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,11 +30,23 @@ class StoryScreenViewModel @Inject constructor(
     }
 
     fun findByName(name: String) {
-        val findedStory = StoryRepository2.getByName(name)
+        val foundStory = storyRepository.getCurrentStory(name)
         _uiStoryState.value = _uiStoryState.value.copy(
-            name = findedStory.name,
-            image = findedStory.image,
-            icon = findedStory.icon,
+            name = foundStory.name,
+            image = foundStory.image,
+            icon = foundStory.icon,
         )
+    }
+
+    fun getFirstStory(){
+        val foundedStories = storyRepository.getAllAvailableStories()
+        if(foundedStories.size > 1) {
+            val foundedStory = storyRepository.getCurrentStory(foundedStories[1].name)
+            _uiStoryState.value = _uiStoryState.value.copy(
+                name = foundedStory.name,
+                icon = foundedStory.icon,
+                image = foundedStory.image,
+            )
+        }
     }
 }
