@@ -58,4 +58,7 @@ object StoryRepository2 {
         Story("ABCDEFGJKKK", R.drawable.play_icon)
     )
 
+    fun getByName(name: String): Story = storyList.find { story ->
+        story.name == name
+    } ?: throw IllegalArgumentException()
 }

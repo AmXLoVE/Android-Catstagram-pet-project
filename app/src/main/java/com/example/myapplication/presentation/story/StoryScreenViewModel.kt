@@ -2,6 +2,7 @@ package com.example.myapplication.presentation.story
 
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.story.StoryRepository
+import com.example.myapplication.data.story.StoryRepository2
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,5 +28,14 @@ class StoryScreenViewModel @Inject constructor(
         catch (e: Exception){
             throw IllegalArgumentException()
         }
+    }
+
+    fun findByName(name: String) {
+        val findedStory = StoryRepository2.getByName(name)
+        _uiStoryState.value = _uiStoryState.value.copy(
+            name = findedStory.name,
+            image = findedStory.image,
+            icon = findedStory.icon,
+        )
     }
 }

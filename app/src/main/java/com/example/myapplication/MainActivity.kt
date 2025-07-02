@@ -51,9 +51,8 @@ class MainActivity : ComponentActivity() {
                             navController.navigate(STORY_SCREEN)
                         },
                         onShowCurrentStory = { story ->
-//                            currentStory.value = storyRepository.getCurrentStory(story.name)
                             baseState.stories.find { (name, icon, hasStory) -> name == story.name }
-                            navController.navigate("$STORY_SCREEN?name=${story.name}")
+                            navController.navigate("$STORY_SCREEN?${story.name}")
                         },
                     )
                 }
@@ -65,7 +64,6 @@ class MainActivity : ComponentActivity() {
                     ),
                 ) { entry ->
                     val userName = entry.arguments?.getString("name") ?: "Гость"
-                    Log.i("asdfasdf", "$userName")
                     StoryScreen(
                         name = userName,
                         onNavigate = { navController.navigate(BASE_SCREEN) },
