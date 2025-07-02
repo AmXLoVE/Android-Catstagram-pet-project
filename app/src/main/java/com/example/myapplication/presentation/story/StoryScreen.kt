@@ -36,6 +36,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 @Composable
 internal fun StoryScreen(
     onNavigate: () -> Unit,
+    name: String,
     viewModel: StoryScreenViewModel = hiltViewModel(),
 ) {
     val state by remember {viewModel.uiStoryState}.collectAsState()
@@ -141,6 +142,6 @@ fun ReactionBlock() {
 private fun BaseScreenPreview() = MyApplicationTheme {
     StoryScreen(
         onNavigate = {},
-        hiltViewModel<StoryScreenViewModel>()
+        name = "",
     )
 }
