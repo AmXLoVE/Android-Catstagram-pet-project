@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.domain.story.model.*
+import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import com.example.myapplication.presentation.base.ui.*
 import com.example.myapplication.ui.theme.MyApplicationTheme
 

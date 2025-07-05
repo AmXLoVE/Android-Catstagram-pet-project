@@ -1,29 +1,38 @@
 package com.example.myapplication.presentation.story
 
-import android.util.Log
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,37 +42,66 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
 import com.example.myapplication.presentation.story.model.GetStoryImage
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
+import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.Continuation
 
 @Composable
 internal fun StoryScreen(
     onNavigate: () -> Unit,
-    name: String,
+    id: Int,
     viewModel: StoryScreenViewModel = hiltViewModel(),
 ) {
-    val state by remember { viewModel.uiStoryState }.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(
+        initialPage = id,
+        pageCount = { viewModel.countAvailableStories() }
+    )
 
-    LaunchedEffect(Unit) {
-        if(name != "0")
-            viewModel.findByName(name)
-        else
-            viewModel.getFirstStory()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        HorizontalPager(
+            modifier = Modifier
+                .fillMaxSize(),
+            userScrollEnabled = true,
+            state = pagerState,
+        ) { page ->
+            ShowStory(page, viewModel)
+
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            BoxForSwipeLeft(pagerState, coroutineScope)
+            BoxForSwipeRight(pagerState, coroutineScope)
+        }
     }
+}
 
-    if (state.name == "" || state.image == 0 || state.icon == 0)
-        return
+@Composable
+fun ShowStory(
+    page: Int,
+    viewModel: StoryScreenViewModel,
+) {
+    val storyState = viewModel.loadStory(page)
 
     Box(
         modifier = Modifier
             .background(Color.hsv(0f, 0f, 0.12f))
     ) {
-        ImageBlock(state.image)
-
         Column(
             modifier = Modifier
-                .zIndex(15f)
+
+                .zIndex(1f)
         ) {
-            HeaderBlock(state)
+            HeaderBlock(storyState)
 
             Spacer(
                 modifier = Modifier
@@ -72,15 +110,20 @@ internal fun StoryScreen(
 
             ReactionBlock()
         }
+
+        ImageBlock(storyState.image)
+
     }
 }
 
 @Composable
-fun ImageBlock(imageRes: Int) {
+fun ImageBlock(
+    imageRes: Int,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .zIndex(5f)
+            .zIndex(0.1f)
     ) {
         GetStoryImage(imageRes)
     }
@@ -88,14 +131,14 @@ fun ImageBlock(imageRes: Int) {
 
 @Composable
 fun HeaderBlock(
-    state: StoryScreenUiState
+    state: StoryScreenUiState,
 ) {
     Row(
         verticalAlignment = Alignment.Top,
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .zIndex(15f)
+            .zIndex(1f)
             .systemBarsPadding()
     ) {
         Image(
@@ -135,18 +178,64 @@ fun ReactionBlock() {
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
             .fillMaxWidth()
-            .zIndex(15f)
+            .zIndex(1f)
             .systemBarsPadding()
     ) {
         OutlinedTextField(
             "",
-            onValueChange = {interactionSource.value = it},
+            onValueChange = { interactionSource.value = it },
             modifier = Modifier
                 .padding(8.dp),
-            label = { Text(text = "Отправить сообщение...")},
+            label = { Text(text = "Отправить сообщение...") },
             shape = RoundedCornerShape(percent = 100),
         )
     }
+}
+
+/**
+ * Тап по правой части экрана - свайп вправо
+ */
+@Composable
+fun BoxForSwipeRight(pagerState: PagerState, coroutineScope: CoroutineScope) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(
+                                (pagerState.currentPage + 1)
+                                    .coerceAtLeast(0)
+                            )
+                        }
+                    })
+            }
+            .padding(start = LocalConfiguration.current.screenWidthDp.dp / 2)
+    )
+}
+
+/**
+ * Тап по левой части экрана - свайп влево
+ */
+@Composable
+fun BoxForSwipeLeft(pagerState: PagerState, coroutineScope: CoroutineScope) {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(0.5f)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(
+                                (pagerState.currentPage - 1)
+                                    .coerceAtLeast(0)
+                            )
+                        }
+                    })
+            }
+    )
 }
 
 @Preview(heightDp = 800)
@@ -154,6 +243,6 @@ fun ReactionBlock() {
 private fun BaseScreenPreview() = MyApplicationTheme {
     StoryScreen(
         onNavigate = {},
-        name = "",
+        id = 1,
     )
 }

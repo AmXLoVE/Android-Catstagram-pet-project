@@ -33,24 +33,24 @@ class MainActivity : ComponentActivity() {
                 composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
-                            navController.navigate("$STORY_SCREEN?0")
+                            navController.navigate("$STORY_SCREEN?-1")
                         },
                         onShowCurrentStory = { story ->
-                            navController.navigate("$STORY_SCREEN?${story.name}")
+                            navController.navigate("$STORY_SCREEN?${story.id}")
                         },
                     )
                 }
 
                 composable(
-                    route = "$STORY_SCREEN?{name}",
+                    route = "$STORY_SCREEN?{id}",
                     arguments = listOf(
-                        navArgument("name") { type = NavType.StringType },
+                        navArgument("id") { type = NavType.IntType },
                     ),
                 ) { entry ->
-                    val userName = entry.arguments?.getString("name") ?: "Гость"
+                    val id = entry.arguments?.getInt("id") ?: -1
                     StoryScreen(
-                        name = userName,
-                        onNavigate = { navController.navigate(BASE_SCREEN) },
+                        id = id,
+                        onNavigate = { navController.popBackStack() },
                     )
                 }
             }

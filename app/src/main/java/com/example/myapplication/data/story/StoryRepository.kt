@@ -1,6 +1,5 @@
 package com.example.myapplication.data.story
 
-import com.example.myapplication.R
 import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.domain.story.model.storyList
@@ -19,9 +18,9 @@ class StoryRepository @Inject constructor() {
             if (hasUserStory(it.name))
                 list.add(
                     StoryPreview(
+                        id = it.id,
                         name = it.name,
                         icon = it.icon,
-                        hasStory = true
                     )
                 )
         }
@@ -32,8 +31,8 @@ class StoryRepository @Inject constructor() {
     /**
      * Вызывается для открытия нажатой истории и загрузки картинки
      */
-    fun getCurrentStory(name: String): Story {
-        return storyList.filter { it.name == name }[0]
+    fun getCurrentStory(id: Int): Story {
+        return storyList[id]
     }
 
     /**
@@ -43,5 +42,21 @@ class StoryRepository @Inject constructor() {
      */
     fun hasUserStory(name: String): Boolean {
         return storyList.any { it.name == name }
+    }
+
+    fun getNextStory(id: Int): Story {
+        return try {
+            storyList[storyList.indexOfFirst { it.id == id } + 1]
+        } catch (e: Exception) {
+            Story(-1, image = -1)
+        }
+    }
+
+    fun getPrevStory(id: Int): Story {
+        return try {
+            storyList[storyList.indexOfFirst { it.id == id } - 1]
+        } catch (e: Exception) {
+            Story(-1, image = -1)
+        }
     }
 }
