@@ -2,7 +2,6 @@ package com.example.myapplication.presentation.story.vm
 
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.story.StoryRepository
-import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +20,12 @@ class StoryScreenViewModel @Inject constructor(
         try {
             val curStory = storyRepository.getCurrentStory(index)
             _uiStoryState.value = _uiStoryState.value.copy(
-                id = curStory.id,
-                name = curStory.name,
+                id = curStory.user.id,
+                name = curStory.user.name,
                 image = curStory.image,
-                icon = curStory.icon
+                icon = curStory.user.icon
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw IllegalArgumentException()
         }
         return uiStoryState.value
@@ -35,9 +34,9 @@ class StoryScreenViewModel @Inject constructor(
     fun findById(id: Int) {
         val foundStory = storyRepository.getCurrentStory(id)
         _uiStoryState.value = _uiStoryState.value.copy(
-            name = foundStory.name,
+            name = foundStory.user.name,
             image = foundStory.image,
-            icon = foundStory.icon,
+            icon = foundStory.user.icon,
         )
     }
 
@@ -46,20 +45,20 @@ class StoryScreenViewModel @Inject constructor(
     }
 
     fun getNextStory() {
-        loadStory(storyRepository.getNextStory(uiStoryState.value.id).id)
+        loadStory(storyRepository.getNextStory(uiStoryState.value.id).user.id)
     }
 
     fun getPrevStory() {
-        loadStory(storyRepository.getPrevStory(uiStoryState.value.id).id)
+        loadStory(storyRepository.getPrevStory(uiStoryState.value.id).user.id)
     }
 
     fun getFirstStory() {
         val foundedStories = storyRepository.getAllAvailableStories()
         if (foundedStories.size > 1) {
-            val foundedStory = storyRepository.getCurrentStory(foundedStories[1].id)
+            val foundedStory = storyRepository.getCurrentStory(foundedStories[1].user.id)
             _uiStoryState.value = _uiStoryState.value.copy(
-                name = foundedStory.name,
-                icon = foundedStory.icon,
+                name = foundedStory.user.name,
+                icon = foundedStory.user.icon,
                 image = foundedStory.image,
             )
         }

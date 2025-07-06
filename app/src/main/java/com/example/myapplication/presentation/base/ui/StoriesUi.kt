@@ -108,7 +108,7 @@ fun StoriesBlock(
                             modifier = Modifier
                                 .padding(6.dp, 0.dp)
                                 .align(alignment = Alignment.TopCenter),
-                            text = story.name,
+                            text = story.user.name,
                         )
                     }
                 }

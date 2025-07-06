@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.domain.story.model.*
+import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import com.example.myapplication.presentation.base.ui.*
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -21,6 +22,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 internal fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
+    onShowProfile: (User) -> Unit,
     viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
     val state by remember {viewModel.uiBaseState}.collectAsState()
@@ -50,6 +52,6 @@ private fun BaseScreenPreview() = MyApplicationTheme {
     BaseScreen(
         onWatchAll = {},
         onShowCurrentStory = {},
-        hiltViewModel<BaseScreenViewModel>()
+        onShowProfile = {},
     )
 }

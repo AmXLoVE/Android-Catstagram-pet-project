@@ -19,7 +19,7 @@ class PostRepository @Inject constructor(){
      */
     fun getAllUserPosts(name: String): List<Post> {
         return postList
-            .filter { it.name == name }
+            .filter { it.user.name == name }
     }
 
     /**
@@ -27,6 +27,6 @@ class PostRepository @Inject constructor(){
      */
     fun getCurrentPost(name: String): Post {
         return postList
-            .filter { it.name == name }[0]
+            .filter { it.user.name == name }[0]
     }
 }

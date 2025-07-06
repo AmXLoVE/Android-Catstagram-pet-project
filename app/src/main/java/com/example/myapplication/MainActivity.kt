@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.myapplication.presentation.base.BaseScreen
+import com.example.myapplication.presentation.profile.ProfileScreen
 import com.example.myapplication.presentation.story.StoryScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,10 +34,13 @@ class MainActivity : ComponentActivity() {
                 composable(route = BASE_SCREEN) {
                     BaseScreen(
                         onWatchAll = {
-                            navController.navigate("$STORY_SCREEN?-1")
+                            navController.navigate("$STORY_SCREEN?0")
                         },
                         onShowCurrentStory = { story ->
-                            navController.navigate("$STORY_SCREEN?${story.id}")
+                            navController.navigate("$STORY_SCREEN?${story.user.id}")
+                        },
+                        onShowProfile = { user ->
+                            navController.navigate("$PROFILE_SCREEN?${user.id}")
                         },
                     )
                 }
@@ -50,7 +54,22 @@ class MainActivity : ComponentActivity() {
                     val id = entry.arguments?.getInt("id") ?: -1
                     StoryScreen(
                         id = id,
-                        onNavigate = { navController.popBackStack() },
+                        onShowProfile = { user ->
+                            navController.navigate("$PROFILE_SCREEN?${user.id}")
+                        },
+                    )
+                }
+
+                composable(
+                    route = "$PROFILE_SCREEN?{id}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.IntType }
+                    )
+                ) { entry ->
+                    val id = entry.arguments?.getInt("id") ?: -1
+                    ProfileScreen(
+                        id = id,
+                        onNavigate = {navController.navigate("$STORY_SCREEN?${id}")},
                     )
                 }
             }

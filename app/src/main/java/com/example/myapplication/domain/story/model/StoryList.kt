@@ -1,23 +1,23 @@
 package com.example.myapplication.domain.story.model
 
 import com.example.myapplication.R
+import com.example.myapplication.domain.user.model.User
+import com.example.myapplication.domain.user.model.userList
 
 /**
  * Мокап данных из БД
  */
 data class Story(
-    val id: Int,
-    val name: String = "Undefined",
+    val user: User,
     val image: Int,
-    val icon: Int = R.drawable.photo_icon,
 )
 
 val storyList = listOf(
-    Story(0, "You", R.drawable._22),
-    Story(1, "Marat_WarTHUNDER", R.drawable.maxresdefault),
-    Story(2, "Leha", R.drawable._22),
-    Story(3, "Albertina_Iglesias", R.drawable.__2025_06_29_103259),
-    Story(4, "Masha228", R.drawable.__2025_06_29_115926),
-    Story(5, "Pasha007", R.drawable.ic_launcher_background),
-    Story(6, "ABCDEFGJKKK", R.drawable.play_icon)
+    Story(userList[0], R.drawable._22),
+    Story(userList[1], R.drawable.maxresdefault),
+    Story(userList[2], R.drawable._22),
+    Story(userList[3], R.drawable.__2025_06_29_103259),
+    Story(userList[4], R.drawable.__2025_06_29_115926),
+    Story(userList[5], R.drawable.ic_launcher_background),
+    Story(userList[6],R.drawable.play_icon)
 )

@@ -1,6 +1,8 @@
 package com.example.myapplication.domain.base.model
 
 import com.example.myapplication.R
+import com.example.myapplication.domain.user.model.User
+import com.example.myapplication.domain.user.model.userList
 import java.util.Calendar
 import java.util.Date
 
@@ -8,8 +10,7 @@ import java.util.Date
  * Мокап данных из БД
  */
 class Post(
-    val name: String,
-    val icon: Int = R.drawable.photo_icon,
+    val user: User,
     val image: Int = R.drawable.play_icon,
     val likeCount: Int = 0,
     val commCount: Int = 0,
@@ -18,8 +19,10 @@ class Post(
 )
 
 val postList = listOf(
-    Post(name = "ALBERTINA_0_o"),
-    Post(name = "xXx_puli_ot_babuli_xXx"),
-    Post(name = "Masha_Kulakova_7"),
-    Post(name = "FoxVapeShop")
+    Post(user = userList[1]),
+    Post(user = userList[2]),
+    Post(user = userList[3]),
+    Post(user = userList[4]),
+    Post(user = userList[5]),
+    Post(user = userList[6]),
 )

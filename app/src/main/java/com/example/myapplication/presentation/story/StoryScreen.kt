@@ -1,13 +1,8 @@
 package com.example.myapplication.presentation.story
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,19 +35,18 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
+import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.presentation.story.model.GetStoryImage
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.coroutines.Continuation
 
 @Composable
 internal fun StoryScreen(
-    onNavigate: () -> Unit,
     id: Int,
+    onShowProfile: (User) -> Unit,
     viewModel: StoryScreenViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -242,7 +236,7 @@ fun BoxForSwipeLeft(pagerState: PagerState, coroutineScope: CoroutineScope) {
 @Composable
 private fun BaseScreenPreview() = MyApplicationTheme {
     StoryScreen(
-        onNavigate = {},
         id = 1,
+        onShowProfile = {},
     )
 }

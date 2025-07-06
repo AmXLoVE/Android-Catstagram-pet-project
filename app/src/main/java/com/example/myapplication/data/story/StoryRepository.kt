@@ -3,6 +3,7 @@ package com.example.myapplication.data.story
 import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.domain.story.model.storyList
+import com.example.myapplication.domain.user.model.User
 import javax.inject.Inject
 
 class StoryRepository @Inject constructor() {
@@ -15,12 +16,11 @@ class StoryRepository @Inject constructor() {
         val list: ArrayList<StoryPreview> = arrayListOf()
 
         storyList.forEach {
-            if (hasUserStory(it.name))
+            if (hasUserStory(it.user.name))
                 list.add(
                     StoryPreview(
-                        id = it.id,
-                        name = it.name,
-                        icon = it.icon,
+                        user = it.user,
+                        icon = it.user.icon,
                     )
                 )
         }
@@ -41,22 +41,22 @@ class StoryRepository @Inject constructor() {
      * Например: список пользователей, экран поиска, экран профиля
      */
     fun hasUserStory(name: String): Boolean {
-        return storyList.any { it.name == name }
+        return storyList.any { it.user.name == name }
     }
 
     fun getNextStory(id: Int): Story {
         return try {
-            storyList[storyList.indexOfFirst { it.id == id } + 1]
-        } catch (e: Exception) {
-            Story(-1, image = -1)
+            storyList[storyList.indexOfFirst { it.user.id == id } + 1]
+        } catch (_: Exception) {
+            Story(User(), image = -1)
         }
     }
 
     fun getPrevStory(id: Int): Story {
         return try {
-            storyList[storyList.indexOfFirst { it.id == id } - 1]
-        } catch (e: Exception) {
-            Story(-1, image = -1)
+            storyList[storyList.indexOfFirst { it.user.id == id } - 1]
+        } catch (_: Exception) {
+            Story(User(), image = -1)
         }
     }
 }

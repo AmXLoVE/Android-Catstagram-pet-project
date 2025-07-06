@@ -1,7 +1,8 @@
 package com.example.myapplication.domain.story.model
 
+import com.example.myapplication.domain.user.model.User
+
 data class StoryPreview(
-    val id: Int,
-    val name: String,
+    val user: User,
     val icon: Int,
 )

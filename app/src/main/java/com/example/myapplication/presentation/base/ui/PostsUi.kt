@@ -51,7 +51,7 @@ fun PostsBlock(posts: List<Post>) {
 
                     Column {
                         Row {
-                            Text(text = post.name)
+                            Text(text = post.user.name)
                         }
                         Row {
                             Text(text = "Posted in ${post.time}", fontSize = 12.sp)
