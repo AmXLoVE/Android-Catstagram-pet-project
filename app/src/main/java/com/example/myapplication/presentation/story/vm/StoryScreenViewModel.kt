@@ -2,6 +2,7 @@ package com.example.myapplication.presentation.story.vm
 
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.story.StoryRepository
+import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,17 +14,19 @@ import javax.inject.Inject
 class StoryScreenViewModel @Inject constructor(
     private val storyRepository: StoryRepository,
 ) : ViewModel() {
-    private val _uiStoryState = MutableStateFlow(StoryScreenUiState(-1))
+    private val _uiStoryState = MutableStateFlow(StoryScreenUiState(User()))
     val uiStoryState: StateFlow<StoryScreenUiState> = _uiStoryState.asStateFlow()
 
     fun loadStory(index: Int): StoryScreenUiState {
         try {
             val curStory = storyRepository.getCurrentStory(index)
             _uiStoryState.value = _uiStoryState.value.copy(
-                id = curStory.user.id,
-                name = curStory.user.name,
                 image = curStory.image,
-                icon = curStory.user.icon
+                user = User(
+                    id = curStory.user.id,
+                    name = curStory.user.name,
+                    icon = curStory.user.icon
+                )
             )
         } catch (_: Exception) {
             throw IllegalArgumentException()
@@ -34,22 +37,25 @@ class StoryScreenViewModel @Inject constructor(
     fun findById(id: Int) {
         val foundStory = storyRepository.getCurrentStory(id)
         _uiStoryState.value = _uiStoryState.value.copy(
-            name = foundStory.user.name,
+            user = User(
+                id = foundStory.user.id,
+                name = foundStory.user.name,
+                icon = foundStory.user.icon
+            ),
             image = foundStory.image,
-            icon = foundStory.user.icon,
         )
     }
 
-    fun countAvailableStories(): Int{
+    fun countAvailableStories(): Int {
         return storyRepository.getAllAvailableStories().size
     }
 
     fun getNextStory() {
-        loadStory(storyRepository.getNextStory(uiStoryState.value.id).user.id)
+        loadStory(storyRepository.getNextStory(uiStoryState.value.user.id).user.id)
     }
 
     fun getPrevStory() {
-        loadStory(storyRepository.getPrevStory(uiStoryState.value.id).user.id)
+        loadStory(storyRepository.getPrevStory(uiStoryState.value.user.id).user.id)
     }
 
     fun getFirstStory() {
@@ -57,14 +63,20 @@ class StoryScreenViewModel @Inject constructor(
         if (foundedStories.size > 1) {
             val foundedStory = storyRepository.getCurrentStory(foundedStories[1].user.id)
             _uiStoryState.value = _uiStoryState.value.copy(
-                name = foundedStory.user.name,
-                icon = foundedStory.user.icon,
+                user = User(
+                    id = foundedStory.user.id,
+                    name = foundedStory.user.name,
+                    icon = foundedStory.user.icon,
+                ),
                 image = foundedStory.image,
             )
         }
     }
 
-    fun storyIsUnavailable(story: StoryScreenUiState): Boolean{
-        return story.id == -1 || story.name == "" || story.image == 0 || story.icon == 0
+    fun storyIsUnavailable(story: StoryScreenUiState): Boolean {
+        return story.user.id == -1 ||
+                story.user.name == "" ||
+                story.image == 0 ||
+                story.user.icon == 0
     }
 }

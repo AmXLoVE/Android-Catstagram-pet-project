@@ -1,12 +1,9 @@
 package com.example.myapplication.presentation.story.model
 
 import androidx.annotation.DrawableRes
-import com.example.myapplication.domain.base.model.Post
-import com.example.myapplication.domain.story.model.StoryPreview
+import com.example.myapplication.domain.user.model.User
 
 data class StoryScreenUiState(
-    val id: Int,
-    val name: String = "...",
+    val user: User,
     @DrawableRes val image: Int = 0,
-    @DrawableRes val icon: Int = 0,
 )

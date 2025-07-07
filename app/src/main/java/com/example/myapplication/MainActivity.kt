@@ -39,8 +39,8 @@ class MainActivity : ComponentActivity() {
                         onShowCurrentStory = { story ->
                             navController.navigate("$STORY_SCREEN?${story.user.id}")
                         },
-                        onShowProfile = { user ->
-                            navController.navigate("$PROFILE_SCREEN?${user.id}")
+                        onShowProfile = { id ->
+                            navController.navigate("$PROFILE_SCREEN?${id}")
                         },
                     )
                 }
@@ -54,8 +54,8 @@ class MainActivity : ComponentActivity() {
                     val id = entry.arguments?.getInt("id") ?: -1
                     StoryScreen(
                         id = id,
-                        onShowProfile = { user ->
-                            navController.navigate("$PROFILE_SCREEN?${user.id}")
+                        onShowProfile = { id ->
+                            navController.navigate("$PROFILE_SCREEN?${id}")
                         },
                     )
                 }

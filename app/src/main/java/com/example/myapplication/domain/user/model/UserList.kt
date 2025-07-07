@@ -10,10 +10,10 @@ data class User(
 )
 
 val userList = listOf(
-    User(0, "You", R.drawable.photo_icon),
-    User(1, "Marat_WarTHUNDER", R.drawable.photo_icon),
-    User(2, "Leha", R.drawable.photo_icon),
-    User(3, "Albertina_Iglesias", R.drawable.photo_icon),
+    User(0, "You", R.drawable.maxresdefault),
+    User(1, "Marat_WarTHUNDER", R.drawable._22),
+    User(2, "Leha", R.drawable.__2025_06_29_103259),
+    User(3, "Albertina_Iglesias", R.drawable.__2025_06_29_115926),
     User(4, "Masha228", R.drawable.photo_icon),
     User(5, "Pasha007", R.drawable.photo_icon),
     User(6, "ABCDEFGJKKK", R.drawable.photo_icon)

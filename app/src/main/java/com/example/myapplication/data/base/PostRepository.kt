@@ -17,16 +17,16 @@ class PostRepository @Inject constructor(){
     /**
      * Вызывается в профиле пользователя, отдает все его посты
      */
-    fun getAllUserPosts(name: String): List<Post> {
+    fun getAllUserPosts(id: Int): List<Post> {
         return postList
-            .filter { it.user.name == name }
+            .filter { it.user.id == id }
     }
 
     /**
      * Вызывается для открытия поста ([com.example.myapplication.domain.base.model.Post]) (пока хз зачем надо)
      */
-    fun getCurrentPost(name: String): Post {
+    fun getCurrentPost(id: Int): Post {
         return postList
-            .filter { it.user.name == name }[0]
+            .filter { it.user.id == id }[0]
     }
 }

@@ -22,7 +22,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 internal fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
-    onShowProfile: (User) -> Unit,
+    onShowProfile: (Int) -> Unit,
     viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
     val state by remember {viewModel.uiBaseState}.collectAsState()

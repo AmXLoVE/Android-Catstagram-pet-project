@@ -2,7 +2,9 @@ package com.example.myapplication.presentation.story
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,11 +44,12 @@ import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.builtins.UIntArraySerializer
 
 @Composable
 internal fun StoryScreen(
     id: Int,
-    onShowProfile: (User) -> Unit,
+    onShowProfile: (Int) -> Unit,
     viewModel: StoryScreenViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -65,13 +68,14 @@ internal fun StoryScreen(
             userScrollEnabled = true,
             state = pagerState,
         ) { page ->
-            ShowStory(page, viewModel)
+            ShowStory(page, onShowProfile, viewModel)
 
         }
 
         Row(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(top = 80.dp)
         ) {
             BoxForSwipeLeft(pagerState, coroutineScope)
             BoxForSwipeRight(pagerState, coroutineScope)
@@ -82,6 +86,7 @@ internal fun StoryScreen(
 @Composable
 fun ShowStory(
     page: Int,
+    onShowProfile: (Int) -> Unit,
     viewModel: StoryScreenViewModel,
 ) {
     val storyState = viewModel.loadStory(page)
@@ -95,7 +100,7 @@ fun ShowStory(
 
                 .zIndex(1f)
         ) {
-            HeaderBlock(storyState)
+            HeaderBlock(storyState, onShowProfile)
 
             Spacer(
                 modifier = Modifier
@@ -126,6 +131,7 @@ fun ImageBlock(
 @Composable
 fun HeaderBlock(
     state: StoryScreenUiState,
+    onShowProfile: (Int) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.Top,
@@ -136,17 +142,23 @@ fun HeaderBlock(
             .systemBarsPadding()
     ) {
         Image(
-            painter = painterResource(state.icon),
+            painter = painterResource(state.user.icon),
             contentDescription = "",
             modifier = Modifier
                 .size(70.dp)
                 .padding(9.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                ) {
+                    onShowProfile(state.user.id)
+                }
         )
 
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically),
-            text = state.name,
+            text = state.user.name,
             color = Color.White,
             fontSize = 20.sp
         )

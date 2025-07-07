@@ -16,7 +16,7 @@ class StoryRepository @Inject constructor() {
         val list: ArrayList<StoryPreview> = arrayListOf()
 
         storyList.forEach {
-            if (hasUserStory(it.user.name))
+            if (hasUserStory(it.user.id))
                 list.add(
                     StoryPreview(
                         user = it.user,
@@ -40,8 +40,8 @@ class StoryRepository @Inject constructor() {
      *
      * Например: список пользователей, экран поиска, экран профиля
      */
-    fun hasUserStory(name: String): Boolean {
-        return storyList.any { it.user.name == name }
+    fun hasUserStory(id: Int): Boolean {
+        return storyList.any { it.user.id == id }
     }
 
     fun getNextStory(id: Int): Story {

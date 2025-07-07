@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.myapplication.R
@@ -23,14 +27,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.presentation.profile.ui.ProfileUiState
 import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 
 @Composable
 fun ProfileScreen(
     id: Int,
     onNavigate: () -> Unit,
-    viewModel: ProfileScreenViewModel = hiltViewModel()
+    viewModel: ProfileScreenViewModel = hiltViewModel(),
 ) {
+    val profileState by remember { viewModel.uiProfileState }.collectAsState()
+    viewModel.loadProfile(id)
+
     Column(
         modifier = Modifier
             .background(
@@ -74,43 +82,62 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(16.dp)
         ) {
+            DrawIcon(viewModel.userHasStory(), profileState)
 
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .padding(4.dp)
-                    .border(
-                        2.dp, color = Color.hsv(
-                            0f,
-                            0.05f,
-                            0.12f
-                        ), shape = RoundedCornerShape(100)
-                    )
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.maxresdefault),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(6.dp)
-                        .clip(shape = RoundedCornerShape(100)),
-                )
-
-
-            }
+            Text(text = profileState.name, color = Color.White)
         }
     }
 }
 
-fun drawIcon(){
-
+@Composable
+fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState){
+    if(hasStory){
+        Box(
+            modifier = Modifier
+                .size(110.dp)
+                .padding(4.dp)
+                .border(
+                    2.dp, color = Color.hsv(
+                        0f,
+                        0.05f,
+                        0.12f
+                    ), shape = RoundedCornerShape(100)
+                )
+        ) {
+            Image(
+                painter = painterResource(profileState.icon),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .clip(shape = RoundedCornerShape(100)),
+            )
+        }
+    }
+    else{
+        Box(
+            modifier = Modifier
+                .size(110.dp)
+                .padding(4.dp),
+        ) {
+            Image(
+                painter = painterResource(profileState.icon),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .clip(shape = RoundedCornerShape(100)),
+            )
+        }
+    }
 }
 
 @Preview
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(1, onNavigate = {})
+    ProfileScreen(1, onNavigate = {}, )
 }
