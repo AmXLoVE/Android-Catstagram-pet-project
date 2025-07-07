@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +25,10 @@ import com.example.myapplication.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.presentation.profile.ui.ProfileUiState
 import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
@@ -84,16 +87,27 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            DrawIcon(viewModel.userHasStory(), profileState)
+            DrawIcon(
+                hasStory = viewModel.userHasStory(),
+                profileState = profileState,
+                onNavigate = onNavigate
+            )
 
-            Text(text = profileState.name, color = Color.White)
+            Text(
+                modifier = Modifier
+                    .padding(8.dp),
+                text = profileState.name,
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }
 
 @Composable
-fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState){
-    if(hasStory){
+fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> Unit) {
+    if (hasStory) {
         Box(
             modifier = Modifier
                 .size(110.dp)
@@ -102,7 +116,7 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState){
                     2.dp, color = Color.hsv(
                         0f,
                         0.05f,
-                        0.12f
+                        0.14f
                     ), shape = RoundedCornerShape(100)
                 )
         ) {
@@ -112,12 +126,12 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState){
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(6.dp)
-                    .clip(shape = RoundedCornerShape(100)),
+                    .padding(8.dp)
+                    .clip(shape = RoundedCornerShape(100))
+                    .clickable { onNavigate() },
             )
         }
-    }
-    else{
+    } else {
         Box(
             modifier = Modifier
                 .size(110.dp)
@@ -139,5 +153,5 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState){
 @Preview
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(1, onNavigate = {}, )
+    ProfileScreen(1, onNavigate = {})
 }

@@ -1,12 +1,13 @@
 package com.example.myapplication.data.story
 
+import com.example.myapplication.data.Repository
 import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.domain.story.model.storyList
 import com.example.myapplication.domain.user.model.User
 import javax.inject.Inject
 
-class StoryRepository @Inject constructor() {
+class StoryRepository @Inject constructor() : Repository {
     /**
      * Вызывается для ленты новостей - отображает доступные Story
      * посредством StoryPreview

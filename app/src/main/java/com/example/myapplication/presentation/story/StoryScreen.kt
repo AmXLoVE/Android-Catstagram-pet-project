@@ -44,7 +44,6 @@ import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.builtins.UIntArraySerializer
 
 @Composable
 internal fun StoryScreen(
