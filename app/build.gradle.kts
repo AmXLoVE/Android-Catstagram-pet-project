@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.foundation.v150)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.foundation)
     implementation(libs.hilt.android)
