@@ -27,8 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +46,7 @@ import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.nio.file.WatchEvent
 
 @Composable
 internal fun StoryScreen(
@@ -140,9 +143,7 @@ fun HeaderBlock(
             .zIndex(1f)
             .systemBarsPadding()
     ) {
-        Image(
-            painter = painterResource(state.user.icon),
-            contentDescription = "",
+        Box(
             modifier = Modifier
                 .size(70.dp)
                 .padding(9.dp)
@@ -152,7 +153,14 @@ fun HeaderBlock(
                 ) {
                     onShowProfile(state.user.id)
                 }
-        )
+                .clip(shape = RoundedCornerShape(100)),
+        ) {
+            Image(
+                painter = painterResource(state.user.icon),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+            )
+        }
 
         Text(
             modifier = Modifier

@@ -1,7 +1,6 @@
 package com.example.myapplication.presentation.story.vm
 
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.data.Repository
 import com.example.myapplication.data.story.StoryRepository
 import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
@@ -13,14 +12,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoryScreenViewModel @Inject constructor(
-    private val storyRepository: Repository,
+    private val storyRepository: StoryRepository,
 ) : ViewModel() {
     private val _uiStoryState = MutableStateFlow(StoryScreenUiState(User()))
     val uiStoryState: StateFlow<StoryScreenUiState> = _uiStoryState.asStateFlow()
 
     fun loadStory(index: Int): StoryScreenUiState {
         try {
-            val curStory = (storyRepository as StoryRepository).getCurrentStory(index)
+            val curStory = storyRepository.getCurrentStory(index)
             _uiStoryState.value = _uiStoryState.value.copy(
                 image = curStory.image,
                 user = User(
@@ -36,7 +35,7 @@ class StoryScreenViewModel @Inject constructor(
     }
 
     fun findById(id: Int) {
-        val foundStory = (storyRepository as StoryRepository).getCurrentStory(id)
+        val foundStory = storyRepository.getCurrentStory(id)
         _uiStoryState.value = _uiStoryState.value.copy(
             user = User(
                 id = foundStory.user.id,
@@ -48,19 +47,19 @@ class StoryScreenViewModel @Inject constructor(
     }
 
     fun countAvailableStories(): Int {
-        return (storyRepository as StoryRepository).getAllAvailableStories().size
+        return storyRepository.getAllAvailableStories().size
     }
 
     fun getNextStory() {
-        loadStory((storyRepository as StoryRepository).getNextStory(uiStoryState.value.user.id).user.id)
+        loadStory(storyRepository.getNextStory(uiStoryState.value.user.id).user.id)
     }
 
     fun getPrevStory() {
-        loadStory((storyRepository as StoryRepository).getPrevStory(uiStoryState.value.user.id).user.id)
+        loadStory(storyRepository.getPrevStory(uiStoryState.value.user.id).user.id)
     }
 
     fun getFirstStory() {
-        val foundedStories = (storyRepository as StoryRepository).getAllAvailableStories()
+        val foundedStories = storyRepository.getAllAvailableStories()
         if (foundedStories.size > 1) {
             val foundedStory = storyRepository.getCurrentStory(foundedStories[1].user.id)
             _uiStoryState.value = _uiStoryState.value.copy(

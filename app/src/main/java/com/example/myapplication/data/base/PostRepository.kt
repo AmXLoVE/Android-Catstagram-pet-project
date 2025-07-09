@@ -1,11 +1,10 @@
 package com.example.myapplication.data.base
 
-import com.example.myapplication.data.Repository
 import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.domain.base.model.postList
 import javax.inject.Inject
 
-class PostRepository @Inject constructor(): Repository{
+class PostRepository @Inject constructor() {
     /**
      * Вызывается для ленты новостей для N последних постов
      */

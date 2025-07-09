@@ -37,10 +37,10 @@ import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 fun ProfileScreen(
     id: Int,
     onNavigate: () -> Unit,
-    viewModel: ProfileScreenViewModel = hiltViewModel(),
+    /*viewModel: ProfileScreenViewModel = hiltViewModel(),*/
 ) {
-    val profileState by remember { viewModel.uiProfileState }.collectAsState()
-    viewModel.loadProfile(id)
+    /*val profileState by remember { viewModel.uiProfileState }.collectAsState()
+    viewModel.loadProfile(id)*/
 
     Column(
         modifier = Modifier
@@ -88,15 +88,15 @@ fun ProfileScreen(
                 .padding(16.dp)
         ) {
             DrawIcon(
-                hasStory = viewModel.userHasStory(),
-                profileState = profileState,
+                hasStory = true,
+                /*profileState = profileState,*/
                 onNavigate = onNavigate
             )
 
             Text(
                 modifier = Modifier
                     .padding(8.dp),
-                text = profileState.name,
+                text = "profileState.name",
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
@@ -106,7 +106,7 @@ fun ProfileScreen(
 }
 
 @Composable
-fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> Unit) {
+fun DrawIcon(hasStory: Boolean,/* profileState: ProfileUiState,*/ onNavigate: () -> Unit) {
     if (hasStory) {
         Box(
             modifier = Modifier
@@ -121,7 +121,7 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                 )
         ) {
             Image(
-                painter = painterResource(profileState.icon),
+                painter = painterResource(R.drawable.app_icon), //TODO
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -138,7 +138,7 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                 .padding(4.dp),
         ) {
             Image(
-                painter = painterResource(profileState.icon),
+                painter = painterResource(R.drawable.app_icon), //TODO
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
