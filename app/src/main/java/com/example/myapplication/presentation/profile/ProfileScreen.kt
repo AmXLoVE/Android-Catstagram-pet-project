@@ -69,10 +69,9 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
         ){
-            //TODO pages implement
+            //TODO pages implement (HorizontalPager)
+            ProfilePosts(viewModel)
         }
-
-        ProfilePosts(viewModel)
     }
 }
 
@@ -116,7 +115,7 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                 )
         ) {
             Image(
-                painter = painterResource(profileState.icon), //TODO
+                painter = painterResource(profileState.icon),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -133,7 +132,7 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                 .padding(4.dp),
         ) {
             Image(
-                painter = painterResource(profileState.icon), //TODO
+                painter = painterResource(profileState.icon),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
