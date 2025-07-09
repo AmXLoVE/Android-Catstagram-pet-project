@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.base.vm
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.base.PostRepository
 import com.example.myapplication.data.story.StoryRepository
+import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.presentation.base.ui.BaseScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,5 +35,9 @@ class BaseScreenViewModel @Inject constructor(
         catch (e: Exception){
             throw IllegalArgumentException()
         }
+    }
+
+    fun getPostTime(post: Post): String{
+        return postRepository.getPostTime(post.time)
     }
 }

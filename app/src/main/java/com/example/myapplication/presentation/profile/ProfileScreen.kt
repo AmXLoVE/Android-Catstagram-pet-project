@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,15 +36,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapplication.presentation.profile.ui.ProfileUiState
+import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 
 @Composable
 fun ProfileScreen(
     id: Int,
     onNavigate: () -> Unit,
-    /*viewModel: ProfileScreenViewModel = hiltViewModel(),*/
+    viewModel: ProfileScreenViewModel = hiltViewModel(),
 ) {
-    /*val profileState by remember { viewModel.uiProfileState }.collectAsState()
-    viewModel.loadProfile(id)*/
+    val profileState by remember {viewModel.uiProfileState}.collectAsState()
+    viewModel.loadProfile(id)
 
     Column(
         modifier = Modifier
@@ -56,24 +63,33 @@ fun ProfileScreen(
     ) {
         Header()
 
-        ProfileState(onNavigate)
+        ProfileState(profileState, viewModel, onNavigate)
 
-        ProfilePosts()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+            //TODO pages implement
+        }
+
+        ProfilePosts(viewModel)
     }
 }
 
 @Composable
-fun ProfilePosts() {
+fun ProfilePosts(viewModel: ProfileScreenViewModel) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier
             .fillMaxSize(),
-        contentPadding = PaddingValues(2.dp)
+        contentPadding = PaddingValues(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        items(10,
+        items(viewModel.getUsersPostCount(),
             ) {
             Image(
-                painter = painterResource(R.drawable.maxresdefault),
+                painter = painterResource(id = viewModel.getUserPostFromIndex(it).image),
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
@@ -85,11 +101,11 @@ fun ProfilePosts() {
 }
 
 @Composable
-fun DrawIcon(hasStory: Boolean,/* profileState: ProfileUiState,*/ onNavigate: () -> Unit) {
+fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> Unit) {
     if (hasStory) {
         Box(
             modifier = Modifier
-                .size(110.dp)
+                .size(90.dp)
                 .padding(4.dp)
                 .border(
                     2.dp, color = Color.hsv(
@@ -100,7 +116,7 @@ fun DrawIcon(hasStory: Boolean,/* profileState: ProfileUiState,*/ onNavigate: ()
                 )
         ) {
             Image(
-                painter = painterResource(R.drawable.app_icon), //TODO
+                painter = painterResource(profileState.icon), //TODO
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -117,7 +133,7 @@ fun DrawIcon(hasStory: Boolean,/* profileState: ProfileUiState,*/ onNavigate: ()
                 .padding(4.dp),
         ) {
             Image(
-                painter = painterResource(R.drawable.app_icon), //TODO
+                painter = painterResource(profileState.icon), //TODO
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -133,6 +149,7 @@ fun DrawIcon(hasStory: Boolean,/* profileState: ProfileUiState,*/ onNavigate: ()
 fun ColumnText(title: String, count: Int, modifier: Modifier) {
     Column(
         modifier = modifier
+            .padding(4.dp)
     ) {
         Text(
             text = title,
@@ -159,14 +176,14 @@ fun Header() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(12.dp)
     )
     {
         Image(
             painter = painterResource(R.drawable.app_icon),
             contentDescription = "",
             modifier = Modifier
-                .size(70.dp)
+                .size(60.dp)
         )
     }
 
@@ -186,26 +203,27 @@ fun Header() {
 }
 
 @Composable
-fun ProfileState(onNavigate: () -> Unit) {
+fun ProfileState(profileState: ProfileUiState, viewModel: ProfileScreenViewModel, onNavigate: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(12.dp)
     ) {
         DrawIcon(
             hasStory = true,
-            /*profileState = profileState,*/
+            profileState = profileState,
             onNavigate = onNavigate
         )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(4.dp)
         ) {
             Text(
                 modifier = Modifier
-                    .padding(8.dp),
-                text = "profileState.name",
+                    .padding(4.dp),
+                text = profileState.name,
                 color = Color.White,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Normal,
@@ -213,25 +231,26 @@ fun ProfileState(onNavigate: () -> Unit) {
 
             Row(
                 modifier = Modifier
+                    .padding(8.dp)
             ) {
                 ColumnText(
-                    "Публикаций",
-                    99,
-                    Modifier
+                    title = "Публикаций",
+                    count = viewModel.getUsersPostCount(),
+                    modifier = Modifier
                         .weight(1f)
                 )
 
                 ColumnText(
-                    "Подписчиков",
-                    99,
-                    Modifier
+                    title = "Подписчиков",
+                    count = viewModel.getUserSubscriberCount(),
+                    modifier = Modifier
                         .weight(1f)
                 )
 
                 ColumnText(
-                    "Подписок",
-                    99,
-                    Modifier
+                    title = "Подписок",
+                    count = viewModel.getUserSubscriptionCount(),
+                    modifier = Modifier
                         .weight(1f)
                 )
             }

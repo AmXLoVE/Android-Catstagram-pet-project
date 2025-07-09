@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -27,10 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.example.myapplication.domain.base.model.Post
+import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import kotlin.collections.forEach
 
 @Composable
-fun PostsBlock(posts: List<Post>) {
+fun PostsBlock(posts: List<Post>, viewModel: BaseScreenViewModel) {
     Column {
         posts.forEach { post ->
             Column(
@@ -41,29 +44,37 @@ fun PostsBlock(posts: List<Post>) {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Icon(
+                    Box(
                         modifier = Modifier
                             .size(45.dp)
-                            .padding(4.dp),
-                        painter = painterResource(post.image),
-                        contentDescription = ""
-                    )
+                            .padding(4.dp)
+                            .clip(shape = RoundedCornerShape(100))
+                    ) {
+                        Image(
+                            painter = painterResource(post.user.icon),
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
 
                     Column {
                         Row {
                             Text(text = post.user.name)
                         }
                         Row {
-                            Text(text = "Posted in ${post.time}", fontSize = 12.sp)
+                            Text(
+                                text = "Posted in ${viewModel.getPostTime(post)}",
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 }
 
                 Box {
                     Image(
+                        painter = painterResource(post.image),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.play_icon),
                         contentDescription = "...",
                     )
                 }
@@ -72,9 +83,9 @@ fun PostsBlock(posts: List<Post>) {
                     modifier = Modifier
                         .padding(6.dp, 12.dp)
                 ) {
-                    Icon(
+                    Image(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(
@@ -84,9 +95,9 @@ fun PostsBlock(posts: List<Post>) {
                         modifier = Modifier.align(alignment = Alignment.CenterVertically)
                     )
 
-                    Icon(
+                    Image(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(
@@ -96,9 +107,9 @@ fun PostsBlock(posts: List<Post>) {
                         modifier = Modifier.align(alignment = Alignment.CenterVertically)
                     )
 
-                    Icon(
+                    Image(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(

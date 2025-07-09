@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.base.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -21,18 +22,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
+import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
+import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import kotlin.collections.forEach
 
 @Composable
 fun StoriesBlock(
+    viewModel: BaseScreenViewModel,
     stories: List<StoryPreview>,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit
@@ -77,43 +83,10 @@ fun StoriesBlock(
             .padding(start = 12.dp, top = 0.dp, end = 12.dp, bottom = 6.dp)
             .horizontalScroll(rememberScrollState())
     ) {
-        stories.forEach { story ->
-            Button(
-                modifier = Modifier
-                    .size(75.dp, 110.dp)
-                    .padding(4.dp),
-                onClick = { onShowCurrentStory(story) },
-                shape = RoundedCornerShape(15.dp),
-                colors = ButtonColors(
-                    contentColor = Color.Black,
-                    containerColor = Color.White,
-                    disabledContentColor = Color.White,
-                    disabledContainerColor = Color.White
-                ),
-                contentPadding = PaddingValues(0.dp),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Icon(
-                        modifier = Modifier.size(75.dp),
-                        painter = painterResource(R.drawable.photo_icon),
-                        contentDescription = "",
-                    )
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .padding(6.dp, 0.dp)
-                                .align(alignment = Alignment.TopCenter),
-                            text = story.user.name,
-                        )
-                    }
-                }
-            }
-        }
+        DrawStories(
+            stories = stories,
+            onShowCurrentStory = onShowCurrentStory,
+        )
     }
 
     Spacer(
@@ -123,4 +96,55 @@ fun StoriesBlock(
             .background(color = Color.hsv(206f, 0.03f, 0.9f))
             .fillMaxWidth()
     )
+}
+
+@Composable
+fun DrawStories(stories: List<StoryPreview>, onShowCurrentStory: (StoryPreview) -> Unit) {
+    stories.forEach { story ->
+        Button(
+            modifier = Modifier
+                .size(75.dp, 110.dp)
+                .padding(4.dp),
+            onClick = { onShowCurrentStory(story) },
+            shape = RoundedCornerShape(15.dp),
+            colors = ButtonColors(
+                contentColor = Color.Black,
+                containerColor = Color.White,
+                disabledContentColor = Color.White,
+                disabledContainerColor = Color.White
+            ),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(75.dp)
+                        .clip(shape = RoundedCornerShape(100)),
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .align(
+                                alignment = Alignment.Center
+                            ),
+                        contentScale = ContentScale.Crop,
+                        painter = painterResource(story.user.icon),
+                        contentDescription = "",
+                    )
+                }
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .padding(6.dp, 0.dp)
+                            .align(alignment = Alignment.TopCenter),
+                        text = story.user.name,
+                    )
+                }
+            }
+        }
+    }
 }
