@@ -1,5 +1,7 @@
 package com.example.myapplication.data.user
 
+import com.example.myapplication.domain.base.model.Post
+import com.example.myapplication.domain.base.model.postList
 import com.example.myapplication.domain.user.model.SubscribeList
 import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.domain.user.model.userList
@@ -20,6 +22,11 @@ class UserRepository @Inject constructor() {
         return userList
     }
 
+    fun getAllUserPosts(id: Int): List<Post> {
+        return postList
+            .filter { it.user.id == id }
+    }
+
     fun getUserSubscriptions(id: Int): List<User> {
         val userList = ArrayList<User>()
         SubscribeList
@@ -36,5 +43,15 @@ class UserRepository @Inject constructor() {
 
     fun getUserSubscriptionsCount(id: Int): Int {
         return SubscribeList.count { it.userFrom.id == id }
+    }
+
+    fun getUserPosts(id: Int): List<Post>{
+        val userPosts = ArrayList<Post>()
+        postList
+            .filter { it.user.id == id }
+            .forEach {
+                userPosts.add(it)
+            }
+        return userPosts
     }
 }
