@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.base.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,22 +16,30 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.Parameters
+import coil.request.SuccessResult
 import com.example.myapplication.R
 import com.example.myapplication.domain.base.model.Post
 import kotlin.collections.forEach
 
 @Composable
 fun PostsBlock(posts: List<Post>) {
+    val context = LocalContext.current
     Column {
         posts.forEach { post ->
             Column(
@@ -45,7 +54,7 @@ fun PostsBlock(posts: List<Post>) {
                         modifier = Modifier
                             .size(45.dp)
                             .padding(4.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(post.user.icon),
                         contentDescription = ""
                     )
 
@@ -59,11 +68,58 @@ fun PostsBlock(posts: List<Post>) {
                     }
                 }
 
-                Box {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                ) {
+                    Log.i("asdfasdf", "${post.image}")
                     Image(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.play_icon),
+                        painter = rememberAsyncImagePainter(
+                            ImageRequest
+                                .Builder(context)
+                                .okHttpClient {
+                                    OkHttpClient.Builder()
+                                        .connectTimeout(30, TimeUnit.SECONDS)
+                                        .readTimeout(30, TimeUnit.SECONDS)
+                                        .build()
+                                }
+                                .parameters(Parameters())
+                                .listener(object : ImageRequest.Listener {
+                                    override fun onCancel(request: ImageRequest) {
+                                        super.onCancel(request)
+                                        Log.i("asdfasdf", "cancel")
+                                    }
+
+                                    override fun onError(
+                                        request: ImageRequest,
+                                        result: ErrorResult
+                                    ) {
+                                        super.onError(request, result)
+
+                                        Log.i("asdfasdf", "${result.throwable.message}")
+                                    }
+
+                                    override fun onStart(request: ImageRequest) {
+                                        super.onStart(request)
+                                        Log.i("asdfasdf", "start")
+                                    }
+
+                                    override fun onSuccess(
+                                        request: ImageRequest,
+                                        result: SuccessResult
+                                    ) {
+                                        super.onSuccess(request, result)
+                                        Log.i("asdfasdf", "success")
+                                    }
+                                })
+                                .data(post.image)
+                                .size(20, 20)
+                                .build(),
+
+                        ),
                         contentDescription = "...",
                     )
                 }
@@ -74,7 +130,7 @@ fun PostsBlock(posts: List<Post>) {
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(
@@ -86,7 +142,7 @@ fun PostsBlock(posts: List<Post>) {
 
                     Icon(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(
@@ -98,7 +154,7 @@ fun PostsBlock(posts: List<Post>) {
 
                     Icon(
                         modifier = Modifier.size(40.dp),
-                        painter = painterResource(post.image),
+                        painter = painterResource(R.drawable.play_icon),
                         contentDescription = ""
                     )
                     Text(

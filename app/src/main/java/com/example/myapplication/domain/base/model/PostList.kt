@@ -11,7 +11,7 @@ import java.util.Date
  */
 class Post(
     val user: User,
-    val image: Int = R.drawable.play_icon,
+    val image: String = "",
     val likeCount: Int = 0,
     val commCount: Int = 0,
     val repCount: Int = 0,
