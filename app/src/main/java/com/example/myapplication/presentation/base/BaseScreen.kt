@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.base
 
+import android.util.Log
 import com.example.myapplication.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.domain.story.model.*
 import com.example.myapplication.domain.user.model.User
@@ -33,7 +35,7 @@ internal fun BaseScreen(
     onShowProfile: (Int) -> Unit,
     viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
-    val state by remember { viewModel.uiBaseState }.collectAsState()
+    val state by viewModel.uiBaseState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -69,22 +71,28 @@ fun DrawBaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit
 ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+    ) {
+        HeaderBlock()
+
+        StoriesBlock(
+            viewModel = viewModel,
+            stories = state.stories,
+            onWatchAll = onWatchAll,
+            onShowCurrentStory = onShowCurrentStory,
+        )
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        items(state.posts.size) { item ->
-            HeaderBlock()
-
-            StoriesBlock(
-                viewModel = viewModel,
-                stories = state.stories,
-                onWatchAll = onWatchAll,
-                onShowCurrentStory = onShowCurrentStory,
-            )
-
-            PostsBlock(state.posts, viewModel)
+        items(state.posts.count()) { item ->
+            PostsBlock(state.posts[item])
         }
     }
 }

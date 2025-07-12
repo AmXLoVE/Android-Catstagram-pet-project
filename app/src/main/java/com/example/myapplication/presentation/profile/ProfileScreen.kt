@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.myapplication.presentation.profile.ui.ProfileUiState
 import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 
@@ -87,8 +88,8 @@ fun ProfilePosts(viewModel: ProfileScreenViewModel) {
     ) {
         items(viewModel.getUsersPostCount(),
             ) {
-            Image(
-                painter = painterResource(id = viewModel.getUserPostFromIndex(it).image),
+            AsyncImage(
+                model = viewModel.getUserPostFromIndex(it).image,
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()

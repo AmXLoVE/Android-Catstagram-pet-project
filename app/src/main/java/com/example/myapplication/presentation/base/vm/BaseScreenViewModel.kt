@@ -29,30 +29,24 @@ class BaseScreenViewModel @Inject constructor(
 
     init {
         loadStories()
-
-        Log.i("1", "1")
     }
 
     private fun loadStories() {
-        try {
-            viewModelScope.launch {
-                _uiBaseState.value = _uiBaseState.value.copy(
-                    stories = storyRepository.getAllAvailableStories(),
-                    posts = listOf(
-                        Post(
-                            user = postList[0].user,
-                            image = postRepository.getCatImage()
-                        ),
-                        Post(
-                            user = postList[1].user,
-                            image = postRepository.getCatImage()
-                        ),
-                    )
+        viewModelScope.launch {
+            _uiBaseState.value = _uiBaseState.value.copy(
+                stories = storyRepository.getAllAvailableStories(),
+                posts = listOf(
+                    Post(
+                        user = postList[0].user,
+                        image = postRepository.getCatImage()
+                    ),
+                    Post(
+                        user = postList[1].user,
+                        image = postRepository.getCatImage()
+                    ),
                 )
-                _uiBaseState.value = _uiBaseState.value.copy(isLoading = true)
-            }
-        } catch (_: Exception) {
-            throw IllegalArgumentException()
+            )
+            _uiBaseState.value = _uiBaseState.value.copy(isLoading = true)
         }
     }
 }
