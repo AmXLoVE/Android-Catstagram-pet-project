@@ -33,20 +33,26 @@ class BaseScreenViewModel @Inject constructor(
 
     private fun loadStories() {
         viewModelScope.launch {
+            val cat1 = postRepository.getCatImage()
+            val cat2 = postRepository.getCatImage()
+
             _uiBaseState.value = _uiBaseState.value.copy(
                 stories = storyRepository.getAllAvailableStories(),
                 posts = listOf(
                     Post(
                         user = postList[0].user,
-                        image = postRepository.getCatImage()
+                        image = cat1.url,
+                        width = cat1.width,
+                        height = cat1.height
                     ),
                     Post(
                         user = postList[1].user,
-                        image = postRepository.getCatImage()
+                        image = cat2.url,
+                        width = cat2.width,
+                        height = cat2.height
                     ),
                 )
             )
-            _uiBaseState.value = _uiBaseState.value.copy(isLoading = true)
         }
     }
 }

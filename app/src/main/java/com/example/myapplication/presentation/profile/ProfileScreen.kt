@@ -37,7 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.myapplication.data.story.StoryRepository
+import com.example.myapplication.data.user.UserRepository
 import com.example.myapplication.presentation.profile.ui.ProfileUiState
 import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 
@@ -261,5 +264,8 @@ fun ProfileState(profileState: ProfileUiState, viewModel: ProfileScreenViewModel
 @Preview
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(1, onNavigate = {})
+    ProfileScreen(
+        1,
+        onNavigate = {},
+    )
 }

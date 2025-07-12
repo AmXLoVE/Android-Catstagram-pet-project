@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.myapplication.data.RetrofitInstance
 import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.domain.base.model.postList
+import com.example.myapplication.domain.story.model.CatImage
 import javax.inject.Inject
 
 class PostRepository @Inject constructor() {
@@ -24,18 +25,7 @@ class PostRepository @Inject constructor() {
             .filter { it.user.id == id }
     }
 
-    /**
-     * Вызывается для открытия поста ([com.example.myapplication.domain.base.model.Post]) (пока хз зачем надо)
-     */
-    /*fun getCurrentPost(id: Int): Post {
-        return postList
-            .filter { it.user.id == id }[0]
-    }*/
-
-    suspend fun getCatImage(): String {
-        val a =RetrofitInstance.api.getRandomCat().firstOrNull()?.url
-        Log.i("asdfasdf", "$a")
-
-        return a ?: ""
+    suspend fun getCatImage(): CatImage {
+        return RetrofitInstance.api.getRandomCat().firstOrNull() ?: CatImage("-1", "", 0, 0)
     }
 }

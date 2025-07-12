@@ -7,6 +7,4 @@ import com.example.myapplication.domain.user.model.User
 data class BaseScreenUiState(
     val stories: List<StoryPreview> = emptyList(),
     val posts: List<Post> = emptyList(),
-    val isLoading: Boolean = false,
-    val toShowStory: String? = null
 )

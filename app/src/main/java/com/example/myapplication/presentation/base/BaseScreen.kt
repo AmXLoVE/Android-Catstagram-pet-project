@@ -84,15 +84,15 @@ fun DrawBaseScreen(
             onWatchAll = onWatchAll,
             onShowCurrentStory = onShowCurrentStory,
         )
-    }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-    ) {
-        items(state.posts.count()) { item ->
-            PostsBlock(state.posts[item])
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+        ) {
+            items(state.posts.size) { item ->
+                PostsBlock(state.posts[item])
+            }
         }
     }
 }

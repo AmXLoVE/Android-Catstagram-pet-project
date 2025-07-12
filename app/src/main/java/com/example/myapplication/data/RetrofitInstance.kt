@@ -12,9 +12,9 @@ object RetrofitInstance {
     }
 
     val client = OkHttpClient.Builder()
-        .connectTimeout(5, TimeUnit.SECONDS)  // Таймаут на соединение
-        .readTimeout(5, TimeUnit.SECONDS)     // Таймаут на чтение
-        .writeTimeout(5, TimeUnit.SECONDS)    // Таймаут на запись
+        .connectTimeout(995, TimeUnit.SECONDS)
+        .readTimeout(995, TimeUnit.SECONDS)
+        .writeTimeout(995, TimeUnit.SECONDS)
         .addInterceptor(logging)
         .build()
 
