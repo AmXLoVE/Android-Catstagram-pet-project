@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
-import com.example.myapplication.domain.story.model.Story
 import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import kotlin.collections.forEach
@@ -41,7 +40,8 @@ fun StoriesBlock(
     viewModel: BaseScreenViewModel,
     stories: List<StoryPreview>,
     onWatchAll: () -> Unit,
-    onShowCurrentStory: (StoryPreview) -> Unit
+    onShowCurrentStory: (StoryPreview) -> Unit,
+    isLoading: Boolean,
 ) {
     Row(
         modifier = Modifier
@@ -54,7 +54,6 @@ fun StoriesBlock(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            modifier = Modifier,
             onClick = onWatchAll,
             shape = RoundedCornerShape(30.dp),
             colors = ButtonColors(
@@ -86,6 +85,7 @@ fun StoriesBlock(
         DrawStories(
             stories = stories,
             onShowCurrentStory = onShowCurrentStory,
+            isLoading = isLoading
         )
     }
 
@@ -99,7 +99,11 @@ fun StoriesBlock(
 }
 
 @Composable
-fun DrawStories(stories: List<StoryPreview>, onShowCurrentStory: (StoryPreview) -> Unit) {
+fun DrawStories(
+    stories: List<StoryPreview>,
+    onShowCurrentStory: (StoryPreview) -> Unit,
+    isLoading: Boolean,
+) {
     stories.forEach { story ->
         Button(
             modifier = Modifier
@@ -122,13 +126,13 @@ fun DrawStories(stories: List<StoryPreview>, onShowCurrentStory: (StoryPreview) 
                 Box(
                     modifier = Modifier
                         .size(75.dp)
-                        .clip(shape = RoundedCornerShape(100)),
+                        .clip(shape = RoundedCornerShape(100))
+                        .shimmerLoading(isLoading = isLoading),
                 ) {
                     Image(
                         modifier = Modifier
-                            .align(
-                                alignment = Alignment.Center
-                            ),
+                            .align(alignment = Alignment.Center)
+                            .fillMaxSize(),
                         contentScale = ContentScale.Crop,
                         painter = painterResource(story.user.icon),
                         contentDescription = "",
@@ -140,7 +144,8 @@ fun DrawStories(stories: List<StoryPreview>, onShowCurrentStory: (StoryPreview) 
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .padding(6.dp, 0.dp)
-                            .align(alignment = Alignment.TopCenter),
+                            .align(alignment = Alignment.TopCenter)
+                            .shimmerLoading(isLoading = isLoading),
                         text = story.user.name,
                     )
                 }

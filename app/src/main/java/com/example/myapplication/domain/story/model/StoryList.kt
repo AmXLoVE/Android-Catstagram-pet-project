@@ -4,9 +4,6 @@ import com.example.myapplication.R
 import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.domain.user.model.userList
 
-/**
- * Мокап данных из БД
- */
 data class Story(
     val user: User,
     val image: Int,

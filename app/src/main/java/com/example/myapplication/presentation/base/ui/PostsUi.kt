@@ -1,20 +1,18 @@
 package com.example.myapplication.presentation.base.ui
 
-import android.util.Log
-import android.util.TypedValue
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -24,11 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -36,7 +31,10 @@ import com.example.myapplication.R
 import com.example.myapplication.domain.base.model.Post
 
 @Composable
-fun PostsBlock(post: Post) {
+fun PostsBlock(
+    post: Post,
+    isLoading: Boolean,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,9 +47,14 @@ fun PostsBlock(post: Post) {
                 modifier = Modifier
                     .size(45.dp)
                     .padding(4.dp)
-                    .clip(shape = RoundedCornerShape(100)),
+                    .clip(shape = CircleShape),
             ) {
-                Icon(
+                Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(alignment = Alignment.Center)
+                        .shimmerLoading(isLoading = isLoading),
+                    contentScale = ContentScale.Crop,
                     painter = painterResource(post.user.icon),
                     contentDescription = "",
                 )
@@ -67,18 +70,16 @@ fun PostsBlock(post: Post) {
             }
         }
 
-        Box(
+        AsyncImage(
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(500.dp)
-        ) {
-            AsyncImage(
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-                model = post.image,
-                contentDescription = "...",
-            )
-        }
+                .aspectRatio(post.width.toFloat() / post.height.toFloat())
+                .shimmerLoading(isLoading = isLoading),
+            model = post.image,
+            contentDescription = "...",
+        )
+
 
         Row(
             modifier = Modifier

@@ -5,13 +5,10 @@ import com.example.myapplication.domain.story.model.StoryPreview
 import com.example.myapplication.domain.story.model.storyList
 import com.example.myapplication.domain.user.model.User
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class StoryRepository @Inject constructor() {
-    /**
-     * Вызывается для ленты новостей - отображает доступные Story
-     * посредством StoryPreview
-     * [com.example.myapplication.domain.story.model.Story]
-     */
     fun getAllAvailableStories(): List<StoryPreview> { //TODO Можно кешировать
         val list: ArrayList<StoryPreview> = arrayListOf()
 
@@ -28,18 +25,10 @@ class StoryRepository @Inject constructor() {
         return list
     }
 
-    /**
-     * Вызывается для открытия нажатой истории и загрузки картинки
-     */
     fun getCurrentStory(id: Int): Story {
         return storyList[id]
     }
 
-    /**
-     * Вызывается для мест, где нужно узнать есть ли Story у конкретного пользователя
-     *
-     * Например: список пользователей, экран поиска, экран профиля
-     */
     fun hasUserStory(id: Int): Boolean {
         return storyList.any { it.user.id == id }
     }

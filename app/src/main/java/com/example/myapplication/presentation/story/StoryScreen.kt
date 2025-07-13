@@ -39,14 +39,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.R
-import com.example.myapplication.domain.user.model.User
 import com.example.myapplication.presentation.story.model.GetStoryImage
 import com.example.myapplication.presentation.story.model.StoryScreenUiState
 import com.example.myapplication.presentation.story.vm.StoryScreenViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.nio.file.WatchEvent
 
 @Composable
 internal fun StoryScreen(

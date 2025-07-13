@@ -21,9 +21,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,10 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.myapplication.data.story.StoryRepository
-import com.example.myapplication.data.user.UserRepository
 import com.example.myapplication.presentation.profile.ui.ProfileUiState
 import com.example.myapplication.presentation.profile.vm.ProfileScreenViewModel
 
@@ -50,8 +47,13 @@ fun ProfileScreen(
     onNavigate: () -> Unit,
     viewModel: ProfileScreenViewModel = hiltViewModel(),
 ) {
-    val profileState by remember {viewModel.uiProfileState}.collectAsState()
-    viewModel.loadProfile(id)
+    val profileState by viewModel.uiProfileState.collectAsState()
+
+    LaunchedEffect(id) {
+        if (viewModel.uiProfileState.value.id != id) {
+            viewModel.loadProfile(id)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -69,13 +71,13 @@ fun ProfileScreen(
 
         ProfileState(profileState, viewModel, onNavigate)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ){
-            //TODO pages implement (HorizontalPager)
+
+        //TODO pages implement (HorizontalPager)
+        if (profileState.postList.any()) {
             ProfilePosts(viewModel)
+//            Log.i("asdfAAAAAAA", "${profileState.postList.size}")
         }
+//        Log.i("asdf", "${profileState.postList.size}")
     }
 }
 
@@ -89,10 +91,11 @@ fun ProfilePosts(viewModel: ProfileScreenViewModel) {
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        items(viewModel.getUsersPostCount(),
-            ) {
+        items(
+            viewModel.getUsersPostCount(),
+        ) { item ->
             AsyncImage(
-                model = viewModel.getUserPostFromIndex(it).image,
+                model = viewModel.getUserPostFromIndex(item).image,
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
@@ -118,16 +121,17 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                     ), shape = RoundedCornerShape(100)
                 )
         ) {
-            Image(
-                painter = painterResource(profileState.icon),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-                    .clip(shape = RoundedCornerShape(100))
-                    .clickable { onNavigate() },
-            )
+            if (profileState.icon != -1)
+                Image(
+                    painter = painterResource(profileState.icon),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                        .clip(shape = RoundedCornerShape(100))
+                        .clickable { onNavigate() },
+                )
         }
     } else {
         Box(
@@ -135,15 +139,16 @@ fun DrawIcon(hasStory: Boolean, profileState: ProfileUiState, onNavigate: () -> 
                 .size(110.dp)
                 .padding(4.dp),
         ) {
-            Image(
-                painter = painterResource(profileState.icon),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(6.dp)
-                    .clip(shape = RoundedCornerShape(100)),
-            )
+            if (profileState.icon != -1)
+                Image(
+                    painter = painterResource(profileState.icon),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(6.dp)
+                        .clip(shape = RoundedCornerShape(100)),
+                )
         }
     }
 }
@@ -206,7 +211,11 @@ fun Header() {
 }
 
 @Composable
-fun ProfileState(profileState: ProfileUiState, viewModel: ProfileScreenViewModel, onNavigate: () -> Unit) {
+fun ProfileState(
+    profileState: ProfileUiState,
+    viewModel: ProfileScreenViewModel,
+    onNavigate: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

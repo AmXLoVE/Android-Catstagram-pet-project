@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.story.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.data.story.StoryRepository
 import com.example.myapplication.domain.user.model.User
@@ -28,8 +29,9 @@ class StoryScreenViewModel @Inject constructor(
                     icon = curStory.user.icon
                 )
             )
-        } catch (_: Exception) {
-            throw IllegalArgumentException()
+        }
+        catch (e: Exception) {
+            Log.i("asdf", "BaseScreenViewModel_loadStories_error: ${e.message}")
         }
         return uiStoryState.value
     }

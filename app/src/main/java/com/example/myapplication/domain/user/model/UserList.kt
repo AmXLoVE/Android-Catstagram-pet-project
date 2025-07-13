@@ -18,3 +18,9 @@ val userList = listOf(
     User(5, "Pasha007", R.drawable.photo_icon),
     User(6, "ABCDEFGJKKK", R.drawable.photo_icon)
 )
+
+val userListPlaceHolder = listOf(
+    User(0, "You", R.drawable.usericon_placeholder),
+    User(1, "", R.drawable.usericon_placeholder),
+    User(2, "", R.drawable.usericon_placeholder),
+)

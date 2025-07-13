@@ -1,6 +1,5 @@
 package com.example.myapplication.data
 
-import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.domain.story.model.CatImage
 import retrofit2.Response
 import retrofit2.http.Body

@@ -1,6 +1,5 @@
 package com.example.myapplication.presentation.base
 
-import android.util.Log
 import com.example.myapplication.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -10,20 +9,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.domain.base.model.Post
 import com.example.myapplication.domain.story.model.*
-import com.example.myapplication.domain.user.model.User
+import com.example.myapplication.domain.user.model.userListPlaceHolder
 import com.example.myapplication.presentation.base.vm.BaseScreenViewModel
 import com.example.myapplication.presentation.base.ui.*
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -78,21 +74,39 @@ fun DrawBaseScreen(
     ) {
         HeaderBlock()
 
-        StoriesBlock(
-            viewModel = viewModel,
-            stories = state.stories,
-            onWatchAll = onWatchAll,
-            onShowCurrentStory = onShowCurrentStory,
-        )
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ) {
-            items(state.posts.size) { item ->
-                PostsBlock(state.posts[item])
-            }
+        if (state.isLoading) {
+            DrawStoryPosts(
+                viewModel,
+                onWatchAll,
+                onShowCurrentStory,
+                stories = listOf(
+                    StoryPreview(user = userListPlaceHolder[0], R.drawable.usericon_placeholder),
+                    StoryPreview(user = userListPlaceHolder[1], R.drawable.usericon_placeholder),
+                    StoryPreview(user = userListPlaceHolder[2], R.drawable.usericon_placeholder),
+                ),
+                posts = listOf(
+                    Post(
+                        user = userListPlaceHolder[0],
+                        image = "",
+                        1920, 1080
+                    ),
+                    Post(
+                        user = userListPlaceHolder[1],
+                        image = "",
+                        1920, 1080
+                    )
+                ),
+                isLoading = state.isLoading,
+            )
+        } else {
+            DrawStoryPosts(
+                viewModel = viewModel,
+                onWatchAll = onWatchAll,
+                onShowCurrentStory = onShowCurrentStory,
+                stories =  state.stories,
+                posts =  state.posts,
+                isLoading = state.isLoading,
+            )
         }
     }
 }
@@ -103,6 +117,34 @@ fun DrawChat() {
         painter = painterResource(R.drawable.maxresdefault),
         contentDescription = "",
     )
+}
+
+@Composable
+fun DrawStoryPosts(
+    viewModel: BaseScreenViewModel,
+    onWatchAll: () -> Unit,
+    onShowCurrentStory: (StoryPreview) -> Unit,
+    stories: List<StoryPreview>,
+    posts: List<Post>,
+    isLoading: Boolean,
+) {
+    StoriesBlock(
+        viewModel = viewModel,
+        stories = stories,
+        onWatchAll = onWatchAll,
+        onShowCurrentStory = onShowCurrentStory,
+        isLoading = isLoading
+    )
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+    ) {
+        items(posts.size) { item ->
+            PostsBlock(posts[item], isLoading)
+        }
+    }
 }
 
 @Preview(heightDp = 800)
