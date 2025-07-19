@@ -33,7 +33,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":app"))
+    implementation(libs.coil.compose)
+    implementation(libs.material3)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.logging.interceptor)

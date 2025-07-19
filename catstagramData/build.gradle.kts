@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":catstagramDomain"))
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.foundation)
     implementation(libs.hilt.android)

@@ -30,14 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.catstagram.android.domain.core_story.StoryPreview
 import com.catstagram.android.domain.core_ui.components.animation.shimmerLoading
-import com.example.catstagram.R
-import com.catstagram.app.domain.story.model.StoryPreview
-import com.catstagram.app.presentation.base.vm.BaseScreenViewModel
+import com.example.catstagramdomain.R
 
 @Composable
 fun StoriesBlock(
-    viewModel: BaseScreenViewModel,
     stories: List<StoryPreview>,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,

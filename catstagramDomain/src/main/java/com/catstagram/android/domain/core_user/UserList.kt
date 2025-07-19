@@ -1,7 +1,7 @@
 package com.catstagram.android.domain.core_user
 
 import androidx.annotation.DrawableRes
-import com.example.catstagram.R
+import com.example.catstagramdomain.R
 
 data class User(
     val id: Int = -1,

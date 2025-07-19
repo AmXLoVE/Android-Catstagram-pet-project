@@ -2,7 +2,7 @@ package com.catstagram.android.domain.core_story
 
 import com.catstagram.android.domain.core_user.User
 import com.catstagram.android.domain.core_user.userList
-import com.catstagram.android.R
+import com.example.catstagramdomain.R
 
 data class Story(
     val user: User,
@@ -10,7 +10,7 @@ data class Story(
 )
 
 val storyList = listOf(
-    Story(userList[0], R.drawable.),
+    Story(userList[0], R.drawable.maxresdefault),
     Story(userList[1], R.drawable.maxresdefault),
     Story(userList[2], R.drawable._22),
     Story(userList[3], R.drawable.__2025_06_29_103259),

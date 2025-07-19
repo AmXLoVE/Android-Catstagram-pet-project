@@ -33,6 +33,11 @@ android {
 }
 
 dependencies {
+    implementation(libs.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(project(":catstagramDomain"))
+    implementation(project(":catstagramData"))
+    implementation(libs.coil.compose)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.foundation)
     implementation(libs.hilt.android)

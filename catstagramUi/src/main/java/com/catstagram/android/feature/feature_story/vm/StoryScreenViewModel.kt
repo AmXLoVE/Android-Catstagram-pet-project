@@ -2,12 +2,14 @@ package com.catstagram.android.feature.feature_story.vm
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.catstagram.android.data.core_data.story.StoryRepository
+import com.catstagram.android.domain.core_ui.states.StoryScreenUiState
+import com.catstagram.android.domain.core_user.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-import kotlin.collections.get
 
 @HiltViewModel
 class StoryScreenViewModel @Inject constructor(
@@ -74,9 +76,9 @@ class StoryScreenViewModel @Inject constructor(
     }
 
     fun storyIsUnavailable(story: StoryScreenUiState): Boolean {
-        return story.user.id == -1 ||
-                story.user.name == "" ||
-                story.image == 0 ||
-                story.user.icon == 0
+        return (story.user.id == -1) ||
+                (story.user.name == "") ||
+                (story.image == 0) ||
+                (story.user.icon == 0)
     }
 }

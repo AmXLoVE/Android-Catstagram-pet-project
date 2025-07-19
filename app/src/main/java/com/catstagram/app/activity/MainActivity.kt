@@ -12,10 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
-import com.catstagram.android.feature.feature_basescreen.ui.*
-import com.catstagram.android.feature.feature_story.ui.*
-import com.catstagram.android.feature.feature_profile.ui.*
-import com.catstagram.android.domain.core_story.StoryPreview
+import com.catstagram.android.feature.feature_basescreen.ui.BaseScreen
+import com.catstagram.android.feature.feature_story.ui.StoryScreen
+import com.catstagram.android.feature.feature_profile.ui.ProfileScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

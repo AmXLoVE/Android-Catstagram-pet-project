@@ -2,6 +2,9 @@ package com.catstagram.android.feature.feature_basescreen.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.catstagram.android.data.core_data.post.PostRepository
+import com.catstagram.android.data.core_data.story.StoryRepository
+import com.catstagram.android.domain.core_ui.states.BaseScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

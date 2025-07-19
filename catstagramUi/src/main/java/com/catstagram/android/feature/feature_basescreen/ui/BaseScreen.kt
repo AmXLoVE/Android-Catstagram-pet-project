@@ -3,7 +3,8 @@ package com.catstagram.android.feature.feature_basescreen.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -13,19 +14,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.catstagram.android.domain.core_post.Post
+import com.catstagram.android.domain.core_story.StoryPreview
+import com.catstagram.android.domain.core_ui.components.base.HeaderBlock
+import com.catstagram.android.domain.core_ui.components.post.PostsBlock
+import com.catstagram.android.domain.core_ui.components.story.StoriesBlock
+import com.catstagram.android.domain.core_ui.states.BaseScreenUiState
+import com.catstagram.android.domain.core_user.userListPlaceHolder
 import com.catstagram.android.feature.feature_basescreen.vm.BaseScreenViewModel
-import com.catstagram.app.domain.base.model.Post
-import com.catstagram.app.domain.user.model.userListPlaceHolder
-import com.catstagram.app.domain.story.model.StoryPreview
-import com.catstagram.app.presentation.base.ui.BaseScreenUiState
-import com.catstagram.app.presentation.base.ui.HeaderBlock
-import com.catstagram.app.presentation.base.ui.PostsBlock
-import com.catstagram.app.presentation.base.ui.StoriesBlock
-import com.catstagram.app.ui.theme.MyApplicationTheme
-import kotlin.collections.get
+import com.example.catstagramdomain.R
 
 @Composable
 fun BaseScreen(
@@ -49,7 +48,6 @@ fun BaseScreen(
     ) { page ->
         when (page) {
             0 -> DrawBaseScreen(
-                viewModel = viewModel,
                 scrollState = scrollState,
                 state = state,
                 onWatchAll = onWatchAll,
@@ -64,7 +62,6 @@ fun BaseScreen(
 
 @Composable
 fun DrawBaseScreen(
-    viewModel: BaseScreenViewModel,
     scrollState: ScrollState,
     state: BaseScreenUiState,
     onWatchAll: () -> Unit,
@@ -79,7 +76,6 @@ fun DrawBaseScreen(
 
         if (state.isLoading) {
             DrawStoryPosts(
-                viewModel,
                 onWatchAll,
                 onShowCurrentStory,
                 stories = listOf(
@@ -103,7 +99,6 @@ fun DrawBaseScreen(
             )
         } else {
             DrawStoryPosts(
-                viewModel = viewModel,
                 onWatchAll = onWatchAll,
                 onShowCurrentStory = onShowCurrentStory,
                 stories =  state.stories,
@@ -124,7 +119,6 @@ fun DrawChat() {
 
 @Composable
 fun DrawStoryPosts(
-    viewModel: BaseScreenViewModel,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
     stories: List<StoryPreview>,
@@ -132,7 +126,6 @@ fun DrawStoryPosts(
     isLoading: Boolean,
 ) {
     StoriesBlock(
-        viewModel = viewModel,
         stories = stories,
         onWatchAll = onWatchAll,
         onShowCurrentStory = onShowCurrentStory,
@@ -148,14 +141,4 @@ fun DrawStoryPosts(
             PostsBlock(posts[item], isLoading)
         }
     }
-}
-
-@Preview(heightDp = 800)
-@Composable
-private fun BaseScreenPreview() = MyApplicationTheme {
-    BaseScreen(
-        onWatchAll = {},
-        onShowCurrentStory = {},
-        onShowProfile = {},
-    )
 }

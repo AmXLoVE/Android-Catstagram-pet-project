@@ -3,13 +3,18 @@ package com.catstagram.android.feature.feature_profile.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.catstagram.android.data.core_data.post.PostRepository
+import com.catstagram.android.data.core_data.story.StoryRepository
+import com.catstagram.android.data.core_data.user.UserRepository
+import com.catstagram.android.domain.core_post.Post
+import com.catstagram.android.domain.core_ui.states.ProfileUiState
+import com.catstagram.android.domain.core_user.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.get
 
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(

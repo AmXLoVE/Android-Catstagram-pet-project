@@ -33,16 +33,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.catstagram.android.domain.core_ui.components.story.GetStoryImage
+import com.catstagram.android.domain.core_ui.states.StoryScreenUiState
 import com.catstagram.android.feature.feature_story.vm.StoryScreenViewModel
-import com.example.catstagram.R
-import com.catstagram.app.presentation.story.model.GetStoryImage
-import com.catstagram.app.presentation.story.model.StoryScreenUiState
-import com.catstagram.app.ui.theme.MyApplicationTheme
+import com.example.catstagramdomain.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -246,14 +244,5 @@ fun BoxForSwipeLeft(pagerState: PagerState, coroutineScope: CoroutineScope) {
                         }
                     })
             }
-    )
-}
-
-@Preview(heightDp = 800)
-@Composable
-private fun BaseScreenPreview() = MyApplicationTheme {
-    StoryScreen(
-        id = 1,
-        onShowProfile = {},
     )
 }

@@ -27,9 +27,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.catstagram.android.domain.core_post.Post
 import com.catstagram.android.domain.core_ui.components.animation.shimmerLoading
-import com.example.catstagram.R
-import com.catstagram.app.domain.base.model.Post
+import com.example.catstagramdomain.R
 
 @Composable
 fun PostsBlock(

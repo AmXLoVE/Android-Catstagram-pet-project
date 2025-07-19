@@ -1,6 +1,7 @@
 package com.catstagram.android.domain.core_ui.states
 
 import androidx.annotation.DrawableRes
+import com.catstagram.android.domain.core_post.Post
 
 data class ProfileUiState(
     val id: Int = -1,
