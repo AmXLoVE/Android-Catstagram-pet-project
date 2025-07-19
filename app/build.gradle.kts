@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication"
+    namespace = "com.example.catstagram"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.example.catstagram"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -42,16 +42,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.converter.gson)
-    implementation(libs.logging.interceptor)
-    implementation(libs.androidx.foundation.v150)
+    implementation(project(":catstagramDomain"))
+    implementation(project(":catstagramUi"))
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.foundation)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.coil.compose)
-    implementation(libs.coil)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

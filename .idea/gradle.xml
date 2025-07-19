@@ -11,6 +11,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/catstagramData" />
+            <option value="$PROJECT_DIR$/catstagramDomain" />
+            <option value="$PROJECT_DIR$/catstagramUi" />
           </set>
         </option>
       </GradleProjectSettings>

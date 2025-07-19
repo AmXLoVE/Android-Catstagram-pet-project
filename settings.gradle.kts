@@ -15,3 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "My Application"
 include(":app")
+include(":catstagramData")
+include(":catstagramDomain")
+include(":catstagramUi")
