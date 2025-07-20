@@ -9,4 +9,5 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
