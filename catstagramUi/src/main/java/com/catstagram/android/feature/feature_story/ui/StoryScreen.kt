@@ -95,7 +95,6 @@ fun ShowStory(
     ) {
         Column(
             modifier = Modifier
-
                 .zIndex(1f)
         ) {
             HeaderBlock(storyState, onShowProfile)

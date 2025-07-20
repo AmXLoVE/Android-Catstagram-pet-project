@@ -52,6 +52,7 @@ fun BaseScreen(
                 state = state,
                 onWatchAll = onWatchAll,
                 onShowCurrentStory = onShowCurrentStory,
+                onShowProfile = onShowProfile,
             )
 
             1 -> DrawChat()
@@ -65,7 +66,8 @@ fun DrawBaseScreen(
     scrollState: ScrollState,
     state: BaseScreenUiState,
     onWatchAll: () -> Unit,
-    onShowCurrentStory: (StoryPreview) -> Unit
+    onShowCurrentStory: (StoryPreview) -> Unit,
+    onShowProfile: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -96,6 +98,7 @@ fun DrawBaseScreen(
                     )
                 ),
                 isLoading = state.isLoading,
+                onShowProfile = onShowProfile,
             )
         } else {
             DrawStoryPosts(
@@ -104,6 +107,7 @@ fun DrawBaseScreen(
                 stories =  state.stories,
                 posts =  state.posts,
                 isLoading = state.isLoading,
+                onShowProfile = onShowProfile,
             )
         }
     }
@@ -124,6 +128,7 @@ fun DrawStoryPosts(
     stories: List<StoryPreview>,
     posts: List<Post>,
     isLoading: Boolean,
+    onShowProfile: (Int) -> Unit,
 ) {
     StoriesBlock(
         stories = stories,
@@ -138,7 +143,7 @@ fun DrawStoryPosts(
             .background(color = Color.White)
     ) {
         items(posts.size) { item ->
-            PostsBlock(posts[item], isLoading)
+            PostsBlock(posts[item], isLoading, onShowProfile)
         }
     }
 }

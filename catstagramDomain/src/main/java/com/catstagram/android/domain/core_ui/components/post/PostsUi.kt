@@ -2,6 +2,8 @@ package com.catstagram.android.domain.core_ui.components.post
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +38,7 @@ import com.example.catstagramdomain.R
 fun PostsBlock(
     post: Post,
     isLoading: Boolean,
+    onShowProfile: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -48,7 +52,13 @@ fun PostsBlock(
                 modifier = Modifier
                     .size(45.dp)
                     .padding(4.dp)
-                    .clip(shape = CircleShape),
+                    .clip(shape = CircleShape)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        onShowProfile(post.user.id)
+                    },
             ) {
                 Image(
                     modifier = Modifier
@@ -77,10 +87,8 @@ fun PostsBlock(
                 .fillMaxWidth()
                 .aspectRatio(
                     run {
-                        val w = post.width?.toFloat() ?: 1f
-                        val h = post.height?.toFloat() ?: 1f
-                        if (w > 0 && h > 0) {
-                            (w / h).coerceIn(0.1f, 10f)
+                        if (post.width > 0 && post.height > 0) {
+                            (post.width.toFloat() / post.height.toFloat()).coerceIn(0.1f, 10f)
                         } else 1f
                     }
                 )
