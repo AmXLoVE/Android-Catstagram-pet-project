@@ -75,7 +75,15 @@ fun PostsBlock(
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(post.width.toFloat() / post.height.toFloat())
+                .aspectRatio(
+                    run {
+                        val w = post.width?.toFloat() ?: 1f
+                        val h = post.height?.toFloat() ?: 1f
+                        if (w > 0 && h > 0) {
+                            (w / h).coerceIn(0.1f, 10f)
+                        } else 1f
+                    }
+                )
                 .shimmerLoading(isLoading = isLoading),
             model = post.image,
             contentDescription = "...",
