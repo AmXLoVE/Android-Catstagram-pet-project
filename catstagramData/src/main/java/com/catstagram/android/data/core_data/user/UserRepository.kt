@@ -1,8 +1,8 @@
 package com.catstagram.android.data.core_data.user
 
-import com.catstagram.android.domain.core_user.SubscribeList
-import com.catstagram.android.domain.core_user.User
-import com.catstagram.android.domain.core_user.userList
+import com.catstagram.android.domain.user.SubscribeList
+import com.catstagram.android.domain.user.User
+import com.catstagram.android.domain.user.userList
 import javax.inject.Inject
 import javax.inject.Singleton
 

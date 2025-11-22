@@ -1,10 +1,10 @@
 package com.catstagram.android.data.core_data.post
 
-import com.catstagram.android.domain.core_network.RetrofitInstance
-import com.catstagram.android.domain.core_post.Post
-import com.catstagram.android.domain.core_story.CatImage
-import com.catstagram.android.domain.core_user.User
-import com.catstagram.android.domain.core_user.userList
+import com.catstagram.android.domain.network.RetrofitInstance
+import com.catstagram.android.domain.post.Post
+import com.catstagram.android.domain.story.CatImage
+import com.catstagram.android.domain.user.User
+import com.catstagram.android.domain.user.userList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers

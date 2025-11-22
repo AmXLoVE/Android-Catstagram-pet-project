@@ -1,9 +1,9 @@
 package com.catstagram.android.data.core_data.story
 
-import com.catstagram.android.domain.core_story.Story
-import com.catstagram.android.domain.core_story.StoryPreview
-import com.catstagram.android.domain.core_story.storyList
-import com.catstagram.android.domain.core_user.User
+import com.catstagram.android.domain.story.Story
+import com.catstagram.android.domain.story.StoryPreview
+import com.catstagram.android.domain.story.storyList
+import com.catstagram.android.domain.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
 
