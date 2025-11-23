@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.catstagram.android.feature.basescreen.widget.SpacerHeight
 import com.catstagram.android.feature.basescreen.widget.SpacerWidth
 import com.catstagram.android.feature.chat.model.ChatScreenUiItem
 import com.catstagram.android.feature.chat.model.ChatScreenUiState
@@ -54,15 +55,15 @@ private fun ChatItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(40.dp)
+            .padding(horizontal = 6.dp, vertical = 6.dp)
+            .height(60.dp)
             .clickable(onClick = onChatClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         AsyncImage(
             modifier = Modifier
                 .clip(CircleShape)
-                .size(40.dp),
+                .size(60.dp),
             placeholder = painterResource(R.drawable.maxresdefault),
             contentScale = ContentScale.Crop,
             model = item.avatarRes,
@@ -77,8 +78,9 @@ private fun ChatItem(
                 text = item.name,
                 color = defineColor(item = item),
                 fontWeight = defineFontWeight(item = item),
-                fontSize = 12.sp,
+                fontSize = 18.sp,
             )
+            SpacerHeight(4.dp)
 
             Row {
                 Text(
@@ -86,17 +88,17 @@ private fun ChatItem(
                     text = item.lastMessage,
                     color = defineColor(item = item),
                     fontWeight = defineFontWeight(item = item),
-                    fontSize = 12.sp,
+                    fontSize = 16.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                SpacerWidth(2.dp)
+                SpacerWidth(4.dp)
 
                 Text(
                     text = item.date,
                     color = Color.Gray,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

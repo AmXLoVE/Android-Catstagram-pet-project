@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.catstagramdomain.R
 
 @Composable
-fun TopStoriesBlock(
+fun StoriesTopBlock(
     onWatchAll: () -> Unit,
 ) {
     Row(

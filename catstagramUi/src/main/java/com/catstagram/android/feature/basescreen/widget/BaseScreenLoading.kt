@@ -1,13 +1,11 @@
 package com.catstagram.android.feature.basescreen.widget
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.catstagram.android.feature.common.shimmerLoading
 
 @Composable
-fun LoadingBlock() {
+fun BaseScreenLoading() {
     Column {
         StoriesBlock()
 
@@ -58,7 +56,9 @@ fun LoadingBlock() {
 
 @Composable
 private fun StoriesBlock() {
-    TopStoriesBlock(onWatchAll = {})
+    StoriesTopBlock(
+        onWatchAll = {},
+    )
 
     Row(modifier = Modifier.padding(start = 12.dp)) {
         repeat(6) {

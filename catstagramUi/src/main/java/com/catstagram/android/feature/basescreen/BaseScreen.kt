@@ -1,25 +1,25 @@
 package com.catstagram.android.feature.basescreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.catstagram.android.domain.story.StoryPreview
 import com.catstagram.android.feature.basescreen.model.BaseScreenUiModel
-import com.catstagram.android.feature.basescreen.widget.ContentBlock
+import com.catstagram.android.feature.basescreen.widget.BaseScreenContent
+import com.catstagram.android.feature.basescreen.widget.BaseScreenError
 import com.catstagram.android.feature.basescreen.widget.TopBar
-import com.catstagram.android.feature.basescreen.widget.LoadingBlock
+import com.catstagram.android.feature.basescreen.widget.BaseScreenLoading
 import com.catstagram.android.feature.chat.ChatScreen
-import com.example.catstagramdomain.R
 
 @Composable
 fun BaseScreen(
@@ -34,21 +34,26 @@ fun BaseScreen(
         pageCount = { 2 }
     )
 
-    HorizontalPager(
-        modifier = Modifier
-            .fillMaxSize(),
-        userScrollEnabled = true,
-        state = pagerState,
-    ) { page ->
-        when (page) {
-            0 -> BaseScreen(
-                state = state,
-                onWatchAll = onWatchAll,
-                onShowCurrentStory = onShowCurrentStory,
-                onShowProfile = onShowProfile,
-            )
+    Scaffold { paddingValues ->
 
-            1 -> ChatScreen()
+        HorizontalPager(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding()),
+            userScrollEnabled = true,
+            state = pagerState,
+        ) { page ->
+            when (page) {
+                0 -> BaseScreen(
+                    state = state,
+                    updateContent = { viewModel.update() },
+                    onWatchAll = onWatchAll,
+                    onShowCurrentStory = onShowCurrentStory,
+                    onShowProfile = onShowProfile,
+                )
+
+                1 -> ChatScreen()
+            }
         }
     }
 
@@ -57,6 +62,7 @@ fun BaseScreen(
 @Composable
 fun BaseScreen(
     state: BaseScreenUiModel,
+    updateContent: () -> Unit,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
     onShowProfile: (Int) -> Unit,
@@ -69,16 +75,18 @@ fun BaseScreen(
         TopBar()
 
         when (state) {
-            is BaseScreenUiModel.Content -> ContentBlock(
+            is BaseScreenUiModel.Content -> BaseScreenContent(
                 state = state,
                 onWatchAll = onWatchAll,
                 onShowCurrentStory = onShowCurrentStory,
                 onShowProfile = onShowProfile,
             )
 
-            is BaseScreenUiModel.Loading -> LoadingBlock()
+            is BaseScreenUiModel.Loading -> BaseScreenLoading()
 
-            BaseScreenUiModel.Error -> {}
+            BaseScreenUiModel.Error -> BaseScreenError(
+                updateContent = updateContent,
+            )
         }
     }
 }

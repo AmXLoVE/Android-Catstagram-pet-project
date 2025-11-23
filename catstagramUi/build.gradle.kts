@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":catstagramDomain"))
     implementation(project(":catstagramData"))
     implementation(libs.coil.compose)
+    implementation(libs.androidx.ui.tooling.preview.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.foundation)
     implementation(libs.hilt.android)

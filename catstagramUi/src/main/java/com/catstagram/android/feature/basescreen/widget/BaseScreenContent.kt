@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -33,8 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,12 +39,10 @@ import coil.compose.AsyncImage
 import com.catstagram.android.domain.post.Post
 import com.catstagram.android.domain.story.StoryPreview
 import com.catstagram.android.feature.basescreen.model.BaseScreenUiModel
-import com.catstagram.android.feature.common.shimmerLoading
-import com.example.catstagramdomain.R
 import kotlin.collections.forEach
 
 @Composable
-fun ContentBlock(
+fun BaseScreenContent(
     state: BaseScreenUiModel.Content,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
@@ -79,7 +74,7 @@ private fun StoriesBlock(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
 ) {
-    TopStoriesBlock(onWatchAll = onWatchAll)
+    StoriesTopBlock(onWatchAll = onWatchAll)
 
     Row(
         modifier = Modifier
