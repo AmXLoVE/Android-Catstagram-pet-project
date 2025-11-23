@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.catstagramdomain.R
 
 @Composable
-fun HeaderBlock(){
+fun TopBar(){
     Row(
         modifier = Modifier
             .background(

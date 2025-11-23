@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,12 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.catstagram.android.domain.post.Post
 import com.catstagram.android.domain.story.StoryPreview
 import com.catstagram.android.feature.basescreen.model.BaseScreenUiModel
 import com.catstagram.android.feature.basescreen.widget.ContentBlock
-import com.catstagram.android.feature.basescreen.widget.HeaderBlock
+import com.catstagram.android.feature.basescreen.widget.TopBar
 import com.catstagram.android.feature.basescreen.widget.LoadingBlock
+import com.catstagram.android.feature.chat.ChatScreen
 import com.example.catstagramdomain.R
 
 @Composable
@@ -42,21 +41,21 @@ fun BaseScreen(
         state = pagerState,
     ) { page ->
         when (page) {
-            0 -> DrawBaseScreen(
+            0 -> BaseScreen(
                 state = state,
                 onWatchAll = onWatchAll,
                 onShowCurrentStory = onShowCurrentStory,
                 onShowProfile = onShowProfile,
             )
 
-            1 -> DrawChat()
+            1 -> ChatScreen()
         }
     }
 
 }
 
 @Composable
-fun DrawBaseScreen(
+fun BaseScreen(
     state: BaseScreenUiModel,
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
@@ -67,7 +66,7 @@ fun DrawBaseScreen(
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        HeaderBlock()
+        TopBar()
 
         when (state) {
             is BaseScreenUiModel.Content -> ContentBlock(
@@ -82,12 +81,4 @@ fun DrawBaseScreen(
             BaseScreenUiModel.Error -> {}
         }
     }
-}
-
-@Composable
-fun DrawChat() {
-    Image(
-        painter = painterResource(R.drawable.maxresdefault),
-        contentDescription = "",
-    )
 }
