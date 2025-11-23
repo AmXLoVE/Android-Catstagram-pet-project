@@ -26,6 +26,7 @@ fun BaseScreen(
     onWatchAll: () -> Unit,
     onShowCurrentStory: (StoryPreview) -> Unit,
     onShowProfile: (Int) -> Unit,
+    onShowChat: (Int) -> Unit,
     viewModel: BaseScreenViewModel = hiltViewModel(),
 ) {
     val state: BaseScreenUiModel by viewModel.uiBaseState.collectAsStateWithLifecycle()
@@ -52,7 +53,9 @@ fun BaseScreen(
                     onShowProfile = onShowProfile,
                 )
 
-                1 -> ChatScreen()
+                1 -> ChatScreen(
+                    onShowChat = onShowChat,
+                )
             }
         }
     }

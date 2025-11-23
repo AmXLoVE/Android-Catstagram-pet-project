@@ -35,7 +35,7 @@ import com.example.catstagramui.R
 @Composable
 internal fun ChatScreenContent(
     state: ChatScreenUiState.Content,
-    onChatClick: (id: Int) -> Unit,
+    onChatClick: (Int) -> Unit,
 ) {
     LazyColumn() {
         items(state.chats) { item ->

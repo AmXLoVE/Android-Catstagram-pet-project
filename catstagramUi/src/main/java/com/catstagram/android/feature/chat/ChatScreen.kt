@@ -3,7 +3,6 @@ package com.catstagram.android.feature.chat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,16 +20,21 @@ import com.example.catstagramui.R
 
 @Composable
 internal fun ChatScreen(
+    onShowChat: (Int) -> Unit,
     vm: ChatViewModel = hiltViewModel()
 ) {
     val state: ChatScreenUiState by vm.state.collectAsStateWithLifecycle()
 
-    ChatScreenC(state = state)
+    ChatScreenC(
+        state = state,
+        onShowChat = onShowChat,
+    )
 }
 
 @Composable
 private fun ChatScreenC(
-    state: ChatScreenUiState
+    state: ChatScreenUiState,
+    onShowChat: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -42,7 +46,7 @@ private fun ChatScreenC(
         when (state) {
             is ChatScreenUiState.Content -> ChatScreenContent(
                 state = state,
-                onChatClick = {}, // TODO доделать
+                onChatClick = onShowChat, // TODO доделать
             )
 
             ChatScreenUiState.Error -> ChatScreenError()
@@ -67,6 +71,7 @@ private fun ChatScreenCPreview() {
                     hasHistory = index == 2,
                 )
             },
-        )
+        ),
+        {}
     )
 }

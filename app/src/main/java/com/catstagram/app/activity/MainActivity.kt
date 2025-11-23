@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import com.catstagram.android.feature.basescreen.BaseScreen
+import com.catstagram.android.feature.chat.OneChatScreen
 import com.catstagram.android.feature.story.StoryScreen
 import com.catstagram.android.feature.profile.ProfileScreen
 
@@ -42,6 +43,9 @@ class MainActivity : ComponentActivity() {
                         onShowProfile = { id ->
                             navController.navigate("$PROFILE_SCREEN?${id}")
                         },
+                        onShowChat = { id ->
+                            navController.navigate("$CHAT_SCREEN?${id}")
+                        }
                     )
                 }
 
@@ -70,6 +74,18 @@ class MainActivity : ComponentActivity() {
                     ProfileScreen(
                         id = id,
                         onNavigate = {navController.navigate("$STORY_SCREEN?${id}")},
+                    )
+                }
+
+                composable(
+                    route = "$CHAT_SCREEN?{id}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.IntType },
+                    ),
+                ) { entry ->
+                    val id = entry.arguments?.getInt("id") ?: -1
+                    OneChatScreen(
+                        id = id,
                     )
                 }
             }
