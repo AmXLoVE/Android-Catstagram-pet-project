@@ -27,6 +27,7 @@ internal fun ChatScreen(
 
     ChatScreenC(
         state = state,
+        updateContent = { vm.update() },
         onShowChat = onShowChat,
     )
 }
@@ -34,6 +35,7 @@ internal fun ChatScreen(
 @Composable
 private fun ChatScreenC(
     state: ChatScreenUiState,
+    updateContent: () -> Unit,
     onShowChat: (Int) -> Unit,
 ) {
     Column(
@@ -46,32 +48,13 @@ private fun ChatScreenC(
         when (state) {
             is ChatScreenUiState.Content -> ChatScreenContent(
                 state = state,
-                onChatClick = onShowChat, // TODO доделать
+                onChatClick = onShowChat,
             )
 
-            ChatScreenUiState.Error -> ChatScreenError()
+            ChatScreenUiState.Error -> ChatScreenError(
+                updateContent = updateContent
+            )
             ChatScreenUiState.Loading -> ChatScreenLoading()
         }
     }
-}
-
-@Composable
-@Preview
-private fun ChatScreenCPreview() {
-    ChatScreenC(
-        state = ChatScreenUiState.Content(
-            chats = List(6) { index ->
-                ChatScreenUiItem(
-                    id = 0,
-                    avatarRes = R.drawable.photo_icon,
-                    name = "name",
-                    lastMessage = "some message",
-                    date = "2m ago",
-                    isRead = index == 3,
-                    hasHistory = index == 2,
-                )
-            },
-        ),
-        {}
-    )
 }

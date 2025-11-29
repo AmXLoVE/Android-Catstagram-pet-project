@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import com.catstagram.android.feature.basescreen.BaseScreen
-import com.catstagram.android.feature.chat.OneChatScreen
+import com.catstagram.android.feature.chat.ChatDetailsScreen
 import com.catstagram.android.feature.story.StoryScreen
 import com.catstagram.android.feature.profile.ProfileScreen
 
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                     ),
                 ) { entry ->
                     val id = entry.arguments?.getInt("id") ?: -1
-                    OneChatScreen(
+                    ChatDetailsScreen(
                         id = id,
                     )
                 }

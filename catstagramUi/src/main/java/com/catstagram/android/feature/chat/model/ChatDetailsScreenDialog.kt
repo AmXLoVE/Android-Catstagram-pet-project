@@ -1,6 +1,6 @@
 package com.catstagram.android.feature.chat.model
 
-internal data class OneChatScreenDialog(
+data class ChatDetailsScreenDialog(
     val dialogId: Int,
     val ownerId: Int,
     val companionId: Int,
@@ -9,7 +9,10 @@ internal data class OneChatScreenDialog(
 
 )
 
-internal data class Message(
+data class Message(
+    val messageId: Int,
+    val isUser: Boolean,
+    val isRead: Boolean,
     val dispatchTime: String = "now",
     val text: String = "",
     val image: Int = 0,

@@ -10,7 +10,7 @@ class ChatRemoteDataSource @Inject constructor() {
 
     suspend fun getChats(): List<ChatDto> {
         delay(2000)
-
+//        throw Exception()
         return ChatDto.getChats()
     }
 }

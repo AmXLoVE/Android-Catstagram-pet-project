@@ -28,7 +28,7 @@ fun Modifier.shimmerLoading(
                 durationMillis = durationMillis,
                 easing = LinearEasing,
             ),
-            repeatMode = RepeatMode.Restart,
+            repeatMode = RepeatMode.Reverse,
         ),
         label = "",
     )

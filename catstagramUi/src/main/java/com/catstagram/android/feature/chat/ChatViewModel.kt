@@ -25,15 +25,32 @@ internal class ChatViewModel @Inject constructor(
     val state: StateFlow<ChatScreenUiState> = _state.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val chats = chatRepository.getChats().map { chatDto ->
-                chatsUiStateMapper.map(chatDto = chatDto)
-            }
+        updateFromServer()
+    }
 
-            _state.update {
-                ChatScreenUiState.Content(
-                    chats = chats,
-                )
+    fun update() {
+        _state.update {
+            ChatScreenUiState.Loading
+        }
+        updateFromServer()
+    }
+
+    fun updateFromServer() {
+        viewModelScope.launch {
+            try {
+                val chats = chatRepository.getChats().map { chatDto ->
+                    chatsUiStateMapper.map(chatDto = chatDto)
+                }
+
+                _state.update {
+                    ChatScreenUiState.Content(
+                        chats = chats,
+                    )
+                }
+            } catch (e: Exception) {
+                _state.update {
+                    ChatScreenUiState.Error
+                }
             }
         }
     }
